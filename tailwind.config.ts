@@ -10,9 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // Updated to Inter font
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'], // Using Inter for headlines as well for consistency
+        headline: ['Inter', 'sans-serif'], 
         code: ['monospace', 'monospace'],
       },
       colors: {
@@ -26,11 +25,11 @@ export default {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
         },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
+        primary: { // Used for gradients
+          DEFAULT: 'hsl(var(--primary))', 
           foreground: 'hsl(var(--primary-foreground))',
         },
-        secondary: {
+        secondary: { // Used for gradients
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
@@ -38,7 +37,7 @@ export default {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        accent: {
+        accent: { // Used for gradients
           DEFAULT: 'hsl(var(--accent))',
           foreground: 'hsl(var(--accent-foreground))',
         },
@@ -94,6 +93,11 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      // Adding gradient properties for jace.ai style
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],

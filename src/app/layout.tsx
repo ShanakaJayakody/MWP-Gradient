@@ -18,13 +18,13 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Updated to Inter font */}
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased min-h-screen bg-background text-foreground">
+      {/* Ensure body classes are applied correctly for gradients defined in globals.css */}
+      <body className="font-body antialiased min-h-screen text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark" /* Changed default theme to dark to match jace.ai */
+          defaultTheme="dark" 
           enableSystem
           disableTransitionOnChange
         >

@@ -8,23 +8,33 @@ export default function HomePage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <section className="text-center py-20 md:py-32 relative overflow-hidden">
-        {/* Subtle background glow effect */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute -top-1/4 left-1/2 -translate-x-1/2 w-[200%] h-[200%] bg-gradient-radial from-primary/10 via-transparent to-transparent blur-3xl animate-pulse"></div>
+        {/* Enhanced background glow effect for jace.ai feel */}
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
+          <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight">
-          Welcome to <span className="bg-gradient-to-r from-primary via-accent to-pink-500 text-transparent bg-clip-text">UPrep</span>
+          Welcome to <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">UPrep</span>
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
           Your ultimate platform for UCAT success. Access comprehensive courses, practice questions, and track your progress all in one place, powered by cutting-edge AI.
         </p>
         <div className="space-x-4">
-          <Button size="lg" asChild className="bg-gradient-to-r from-primary via-purple-600 to-accent hover:from-primary/90 hover:via-purple-600/90 hover:to-accent/90 text-primary-foreground shadow-lg hover:shadow-primary/30 transition-all duration-300 transform hover:scale-105">
+          <Button 
+            size="lg" 
+            asChild 
+            className="bg-gradient-to-r from-primary via-purple-600 to-accent hover:from-primary/90 hover:via-purple-600/90 hover:to-accent/90 text-primary-foreground shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3"
+          >
             <Link href="/classroom">
               Explore Courses <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
-          <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105">
+          <Button 
+            size="lg" 
+            variant="outline" 
+            asChild 
+            className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3"
+          >
             <Link href="/practice">Start Practicing</Link>
           </Button>
         </div>
@@ -72,21 +82,23 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description, imageUrl, imageHint }: FeatureCardProps) {
   return (
-    <Card className="bg-card/80 backdrop-blur-sm border-border/50 hover:border-primary/70 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1 flex flex-col">
-      <CardHeader className="items-center text-center">
+    <Card className="bg-card/70 backdrop-blur-md border-border/30 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden">
+      <CardHeader className="items-center text-center p-6">
         {icon}
-        <CardTitle className="font-headline text-2xl">{title}</CardTitle>
+        <CardTitle className="font-headline text-2xl mt-2">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="flex-grow flex flex-col items-center text-center">
-        <Image 
-            src={imageUrl} 
-            alt={title} 
-            data-ai-hint={imageHint} 
-            width={600} 
-            height={400} 
-            className="rounded-md object-cover aspect-video mb-4 shadow-md"
-        />
-        <CardDescription className="text-base">{description}</CardDescription>
+      <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
+        <div className="relative w-full aspect-[16/10] mb-4 rounded-lg overflow-hidden shadow-lg">
+          <Image 
+              src={imageUrl} 
+              alt={title} 
+              data-ai-hint={imageHint} 
+              layout="fill"
+              objectFit="cover" 
+              className="transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <CardDescription className="text-base text-muted-foreground">{description}</CardDescription>
       </CardContent>
     </Card>
   );
