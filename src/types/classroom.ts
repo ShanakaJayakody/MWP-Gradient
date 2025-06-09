@@ -29,4 +29,7 @@ export interface Course {
   description: string;
   imageUrl?: string;
   modules: Module[];
+  instructor?: string;
+  duration?: string; // e.g., "12 hours"
+  progress?: number; // Percentage from 0 to 100
 }
