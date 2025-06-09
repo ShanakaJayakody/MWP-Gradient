@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button";
@@ -7,22 +8,22 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
-
-// This is a conceptual placeholder for an admin feature.
-// In a real application, this would involve authentication, authorization,
-// and interaction with a backend API to save the course data.
+import Link from "next/link";
 
 export default function CreateCoursePage() {
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [instructor, setInstructor] = useState("");
+  const [duration, setDuration] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real app, you would send this data to your backend
-    console.log("Submitting new course:", { courseTitle, courseDescription, imageUrl });
-    alert("Course creation functionality is a placeholder. Check console for data.");
-    // Reset form or redirect
+    const newCourseId = courseTitle.toLowerCase().replace(/\s+/g, '-'); // simple ID generation
+    console.log("Submitting new course:", { courseId: newCourseId, courseTitle, courseDescription, imageUrl, instructor, duration });
+    alert("Course creation functionality is a placeholder. Check console for data. You would then be redirected to edit this course to add modules and lessons.");
+    // Reset form or redirect to the new edit course page e.g. /admin/edit-course/${newCourseId}
   };
 
   return (
@@ -30,14 +31,14 @@ export default function CreateCoursePage() {
       <header className="mb-10 text-center">
         <h1 className="font-headline text-4xl font-bold mb-3">Create New Course (Admin)</h1>
         <p className="text-lg text-muted-foreground">
-          Add a new course to the UPrep platform.
+          Add a new course to the UPrep platform. Modules and lessons can be added after creation.
         </p>
       </header>
 
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="font-headline text-2xl">Course Details</CardTitle>
-          <CardDescription>Fill in the information for the new course.</CardDescription>
+          <CardDescription>Fill in the initial information for the new course. You can add modules and lessons in the next step by editing the course.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -75,15 +76,34 @@ export default function CreateCoursePage() {
               />
             </div>
 
-            {/* In a real system, you'd add sections for Modules and Lessons here,
-                or save the course and then edit it to add modules/lessons. */}
+            <div className="space-y-2">
+              <Label htmlFor="instructor" className="font-headline">Instructor (Optional)</Label>
+              <Input 
+                id="instructor" 
+                value={instructor}
+                onChange={(e) => setInstructor(e.target.value)}
+                placeholder="e.g., Dr. Jane Doe" 
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="duration" className="font-headline">Course Duration (Optional)</Label>
+              <Input 
+                id="duration" 
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                placeholder="e.g., 10 hours" 
+              />
+            </div>
+
             <p className="text-sm text-muted-foreground">
-              Further details like modules and lessons can be added after initial course creation.
+              After creating the course, you will be able to add modules and lessons.
+              For this prototype, you would typically navigate to an "Edit Course" page.
             </p>
 
             <Button type="submit" className="w-full">
               <PlusCircle className="mr-2 h-5 w-5" />
-              Create Course
+              Create Course & Proceed to Edit
             </Button>
           </form>
         </CardContent>
