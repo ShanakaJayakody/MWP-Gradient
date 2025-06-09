@@ -14,7 +14,7 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         <h1 className="font-headline text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 tracking-tight">
-          Welcome to <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">UPrep</span>
+          Welcome to <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span> 
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
           Your ultimate platform for UCAT success. Access comprehensive courses, practice questions, and track your progress all in one place, powered by cutting-edge AI.
@@ -42,7 +42,7 @@ export default function HomePage() {
 
       <section className="py-16 md:py-24">
         <h2 className="font-headline text-4xl font-bold text-center mb-16">
-          Why Choose <span className="text-primary">UPrep</span>?
+          Why Choose <span className="text-primary">MedWithPurpose</span>?
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           <FeatureCard

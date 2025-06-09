@@ -31,7 +31,7 @@ export default function CreateCoursePage() {
       <header className="mb-10 text-center">
         <h1 className="font-headline text-4xl font-bold mb-3">Create New Course (Admin)</h1>
         <p className="text-lg text-muted-foreground">
-          Add a new course to the UPrep platform. Modules and lessons can be added after creation.
+          Add a new course to the MedWithPurpose platform. Modules and lessons can be added after creation.
         </p>
       </header>
 

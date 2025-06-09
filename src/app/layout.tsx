@@ -4,8 +4,8 @@ import {ThemeProvider} from '@/components/theme-provider';
 import {MainLayout} from '@/components/layout/main-layout';
 
 export const metadata: Metadata = {
-  title: 'UPrep - UCAT Platform',
-  description: 'Your comprehensive UCAT preparation platform.',
+  title: 'MedWithPurpose - UCAT Platform', // Updated title
+  description: 'Your comprehensive UCAT preparation platform, by MedWithPurpose.', // Updated description
 };
 
 export default function RootLayout({
