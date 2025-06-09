@@ -1,4 +1,6 @@
 
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, TextSelect, BrainCircuit, Calculator, ClipboardList, Sparkles } from "lucide-react";
@@ -105,7 +107,7 @@ function PracticeOptionCard({ option }: PracticeOptionCardProps) {
         */}
         <p className="text-base text-muted-foreground mb-6 flex-grow">{option.description}</p>
         <Button 
-          asChild 
+          asChild
           className="w-full mt-auto bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 text-primary-foreground shadow-md hover:shadow-primary/30 transition-all duration-300 transform group-hover:scale-105"
           onClick={() => alert(`Navigating to ${option.title} practice area (placeholder). Route: ${option.href}`)} // Placeholder action
         >
