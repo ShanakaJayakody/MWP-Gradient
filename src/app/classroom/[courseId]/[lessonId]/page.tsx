@@ -13,7 +13,7 @@ import { LessonCompletionCheckbox } from "@/components/classroom/lesson-completi
 import { Accordion } from "@/components/ui/accordion";
 import { ModuleAccordion } from "@/components/classroom/module-accordion";
 import { Progress } from "@/components/ui/progress";
-import type { Lesson, Course, Module as ModuleType } from "@/types/classroom"; // Ensure ModuleType is imported if named Module locally
+import type { Lesson, Course, Module as ModuleType } from "@/types/classroom";
 
 interface LessonPageParams {
   params: {
@@ -35,53 +35,62 @@ export default function LessonPage({ params }: LessonPageParams) {
     const lessonDetails = getLessonById(courseId, lessonId);
 
     if (course) {
-      setCourseData(course);
+      setCourseData(course); // Set initial course data
+
+      // Load completions from localStorage or defaults
+      const storedCompletionsRaw = localStorage.getItem('lessonCompletions');
+      const storedCompletions = storedCompletionsRaw ? JSON.parse(storedCompletionsRaw) : {};
       const initialCompletions: Record<string, boolean> = {};
       let completedCount = 0;
+
       course.modules.forEach(module => {
-        module.lessons.forEach(lesson => {
-          const storedCompletions = localStorage.getItem('lessonCompletions');
-          const completions = storedCompletions ? JSON.parse(storedCompletions) : {};
-          const isCompleted = completions[lesson.id] || lesson.isCompleted || false;
-          initialCompletions[lesson.id] = isCompleted;
+        module.lessons.forEach(l => {
+          const isCompleted = storedCompletions[l.id] || l.isCompleted || false;
+          initialCompletions[l.id] = isCompleted;
           if (isCompleted) completedCount++;
         });
       });
       setLessonCompletions(initialCompletions);
       
-      // Update course progress (visual only for now)
       const totalLessons = course.modules.reduce((acc, module) => acc + module.lessons.length, 0);
       if (totalLessons > 0) {
         const progress = Math.round((completedCount / totalLessons) * 100);
-        // This updates the visual progress on the client side for the current course object
-        // In a real app, progress would be managed more robustly
-        setCourseData(prevCourse => prevCourse ? { ...prevCourse, progress } : null);
+        setCourseData(prevCourse => prevCourse ? { ...prevCourse, progress } : course); // Update course with progress
       }
 
     } else {
-      notFound(); // Course not found
+      notFound(); 
     }
 
     if (lessonDetails) {
       setLessonData(lessonDetails);
-      setCurrentModuleIdOpen(lessonDetails.module.id); // Open the current lesson's module by default
-      // Persist completion for current lesson if needed from lessonDetails
-      if (lessonCompletions[lessonDetails.lesson.id] === undefined) {
-        setLessonCompletions(prev => ({...prev, [lessonDetails.lesson.id]: lessonDetails.lesson.isCompleted || false}));
-      }
+      setCurrentModuleIdOpen(lessonDetails.module.id); 
+      
+      // Update lessonCompletions for current lesson if not already set by batch load above
+      setLessonCompletions(prevCompletions => ({
+          ...prevCompletions,
+          [lessonDetails.lesson.id]: prevCompletions[lessonDetails.lesson.id] || lessonDetails.lesson.isCompleted || false
+      }));
+
     } else {
-      notFound(); // Lesson not found
+      notFound(); 
     }
-  }, [courseId, lessonId]);
+  }, [courseId, lessonId]); // Removed lessonCompletions from deps to avoid loop on its own update
+
+  // Effect to save the current lesson as the last viewed for this course
+  useEffect(() => {
+    if (courseId && lessonId && lessonData) { // Ensure lessonData is loaded
+      const localStorageKey = `lastViewedLesson_${courseId}`;
+      localStorage.setItem(localStorageKey, lessonId);
+    }
+  }, [courseId, lessonId, lessonData]);
 
 
   const handleCompletionChange = (id: string, completed: boolean) => {
     setLessonCompletions(prev => {
         const newCompletions = {...prev, [id]: completed};
-        // Update localStorage
         localStorage.setItem('lessonCompletions', JSON.stringify(newCompletions));
         
-        // Recalculate progress for the course
         if (courseData) {
             let completedCount = 0;
             const totalLessons = courseData.modules.reduce((acc, module) => acc + module.lessons.length, 0);
@@ -97,7 +106,7 @@ export default function LessonPage({ params }: LessonPageParams) {
         }
         return newCompletions;
     });
-    console.log(`Lesson ${id} marked as ${completed ? 'complete' : 'incomplete'}`);
+    // console.log(`Lesson ${id} marked as ${completed ? 'complete' : 'incomplete'}`);
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
@@ -107,10 +116,9 @@ export default function LessonPage({ params }: LessonPageParams) {
   };
 
   if (!courseData || !lessonData) {
-    // Could show a loading spinner here
     return (
         <div className="container mx-auto py-8 px-4 text-center">
-            <p>Loading lesson...</p>
+            <p className="text-lg text-muted-foreground">Loading lesson details...</p>
         </div>
     );
   }
@@ -121,17 +129,17 @@ export default function LessonPage({ params }: LessonPageParams) {
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Left Sidebar */}
         <aside className="w-full lg:w-1/3 xl:w-1/4 space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto pr-4">
           <Button variant="outline" asChild className="mb-4 w-full justify-start">
-            <Link href={`/classroom/${courseId}`}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Course Overview</Link>
+            <Link href={`/classroom`}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Classroom Overview</Link>
           </Button>
           <div className="p-4 border rounded-lg bg-card shadow">
             <h2 className="font-headline text-xl mb-1">{course.title}</h2>
-            {course.progress !== undefined && (
+            {/* Use courseData for progress as it's updated by completions */}
+            {courseData.progress !== undefined && (
                 <>
-                <p className="text-xs text-muted-foreground mb-1">{course.progress}% complete</p>
-                <Progress value={course.progress} className="h-2 mb-3" />
+                <p className="text-xs text-muted-foreground mb-1">{courseData.progress}% complete</p>
+                <Progress value={courseData.progress} className="h-2 mb-3" />
                 </>
             )}
           </div>
@@ -150,19 +158,12 @@ export default function LessonPage({ params }: LessonPageParams) {
           </Accordion>
         </aside>
 
-        {/* Right Content Area */}
         <main className="w-full lg:w-2/3 xl:w-3/4">
           <Card className="shadow-xl">
             <CardHeader className="bg-muted/30 p-6">
               <p className="text-sm text-primary font-medium mb-1">{module.title}</p>
               <div className="flex justify-between items-center">
                 <CardTitle className="font-headline text-3xl md:text-4xl">{lesson.title}</CardTitle>
-                {/* Placeholder for Admin Edit Link */}
-                {/* <Button variant="outline" size="icon" asChild title="Edit Lesson (Admin)">
-                  <Link href={`/admin/edit-lesson/${lesson.id}?courseId=${courseId}&moduleId=${module.id}`}>
-                    <Edit3 className="h-5 w-5" />
-                  </Link>
-                </Button> */}
               </div>
             </CardHeader>
             <CardContent className="p-6">
@@ -238,3 +239,4 @@ export default function LessonPage({ params }: LessonPageParams) {
     </div>
   );
 }
+

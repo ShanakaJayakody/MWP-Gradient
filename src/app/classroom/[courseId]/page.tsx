@@ -1,6 +1,7 @@
+
 "use client"
 
-import { notFound } from "next/navigation";
+import { notFound, useRouter } from "next/navigation"; // Added useRouter
 import Image from "next/image";
 import { getCourseById } from "../data";
 import { ModuleAccordion } from "@/components/classroom/module-accordion";
@@ -10,51 +11,75 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { Lesson } from "@/types/classroom";
+import React, { useEffect, useState } from 'react'; // Added useEffect, useState
 
 interface CoursePageProps {
   params: { courseId: string };
 }
 
-// This component will be client-side to manage lesson completion state
-// For a real app, this state would come from a backend and be updated via API calls
-// We'll simulate it with a wrapper client component for state management
-
 interface CourseClientPageProps {
   courseId: string;
 }
 
-// Client component to manage state
+// Client component to manage state and redirection
 function CourseClientPage({ courseId }: CourseClientPageProps) {
   const course = getCourseById(courseId);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // For redirect UX
   const [lessonCompletions, setLessonCompletions] = React.useState<Record<string, boolean>>({});
 
-  React.useEffect(() => {
+  useEffect(() => {
+    if (course) {
+      const localStorageKey = `lastViewedLesson_${courseId}`;
+      const lastViewedLessonId = localStorage.getItem(localStorageKey);
+
+      if (lastViewedLessonId) {
+        router.replace(`/classroom/${courseId}/${lastViewedLessonId}`);
+        // No need to setIsLoading(false) as component will unmount
+      } else if (course.modules?.[0]?.lessons?.[0]?.id) {
+        const firstLessonId = course.modules[0].lessons[0].id;
+        router.replace(`/classroom/${courseId}/${firstLessonId}`);
+        // No need to setIsLoading(false)
+      } else {
+        // No last viewed lesson, and no first lesson (e.g., empty course)
+        setIsLoading(false); // Allow rendering the course overview
+      }
+    } else if (course === undefined && courseId) {
+      // Course data not found, notFound() will be called below
+      setIsLoading(false);
+    }
+  }, [courseId, course, router]);
+
+  useEffect(() => {
     if (course) {
       const initialCompletions: Record<string, boolean> = {};
       course.modules.forEach(module => {
         module.lessons.forEach(lesson => {
-          initialCompletions[lesson.id] = lesson.isCompleted || false;
+          // Prioritize localStorage, then mock data's isCompleted
+          const storedCompletions = localStorage.getItem('lessonCompletions');
+          const completions = storedCompletions ? JSON.parse(storedCompletions) : {};
+          initialCompletions[lesson.id] = completions[lesson.id] || lesson.isCompleted || false;
         });
       });
       setLessonCompletions(initialCompletions);
     }
-  }, [course]);
+  }, [course, courseId]); // Added courseId dependency
 
 
   if (!course) {
+    // This handles the case where getCourseById returns undefined
     notFound();
   }
   
-  // This function would be passed down to the LessonPage
-  const toggleLessonCompletion = (lessonId: string) => {
-    setLessonCompletions(prev => ({
-      ...prev,
-      [lessonId]: !prev[lessonId]
-    }));
-    // In a real app, you'd also make an API call here to persist the change
-    console.log(`Lesson ${lessonId} completion toggled to ${!lessonCompletions[lessonId]}`);
-  };
-
+  // Show loading indicator only if we expect a redirect and course data is loaded
+  if (isLoading && course && (localStorage.getItem(`lastViewedLesson_${courseId}`) || course.modules?.[0]?.lessons?.[0]?.id)) {
+     return (
+        <div className="container mx-auto py-8 px-4 text-center">
+            <p className="text-lg text-muted-foreground">Loading course content...</p>
+            {/* You could add a spinner component here for better UX */}
+        </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -94,7 +119,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
           ))}
         </Accordion>
       ) : (
-        <p className="text-muted-foreground">This course currently has no modules.</p>
+        <p className="text-muted-foreground">This course currently has no modules. You can add them in the admin section.</p>
       )}
     </div>
   );
@@ -104,6 +129,3 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
 export default function CoursePage({ params }: CoursePageProps) {
   return <CourseClientPage courseId={params.courseId} />;
 }
-
-// Dummy import for React to satisfy linter until state is implemented properly
-import React from 'react';
