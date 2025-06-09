@@ -23,7 +23,7 @@ export default function HomePage() {
           <Button 
             size="lg" 
             asChild 
-            className="bg-gradient-to-r from-primary via-purple-600 to-accent hover:from-primary/90 hover:via-purple-600/90 hover:to-accent/90 text-primary-foreground shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3"
+            className="bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 text-primary-foreground shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3"
           >
             <Link href="/classroom">
               Explore Courses <ArrowRight className="ml-2 h-5 w-5" />
@@ -82,7 +82,7 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description, imageUrl, imageHint }: FeatureCardProps) {
   return (
-    <Card className="bg-card/70 backdrop-blur-md border-border/30 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden">
+    <Card className="group bg-card/70 backdrop-blur-md border-border/30 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden">
       <CardHeader className="items-center text-center p-6">
         {icon}
         <CardTitle className="font-headline text-2xl mt-2">{title}</CardTitle>
