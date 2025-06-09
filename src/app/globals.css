@@ -3,30 +3,30 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', sans-serif; /* Updated default font */
 }
 
 @layer base {
   :root {
-    --background: 220 17% 95%; /* Light Gray #F0F2F5 */
-    --foreground: 215 25% 20%; /* Dark Gray for text */
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 215 25% 20%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 20%;
-    --primary: 217 90% 61%; /* Saturated Blue #4285F4 */
-    --primary-foreground: 0 0% 100%; /* White for text on primary */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215 25% 55%; /* Lighter gray for muted text */
-    --accent: 38 100% 50%; /* Warm Orange #FFA000 */
-    --accent-foreground: 27 100% 13%; /* Dark brown/black for text on accent */
+    --background: 220 60% 97%; /* Light: Very light blueish grey #F2F5FA */
+    --foreground: 253 50% 15%; /* Light: Dark purplish text #1D173A */
+    --card: 0 0% 100%; /* Light: White */
+    --card-foreground: 253 50% 15%; /* Light: Dark purplish text */
+    --popover: 0 0% 100%; /* Light: White */
+    --popover-foreground: 253 50% 15%; /* Light: Dark purplish text */
+    --primary: 256 70% 55%; /* Light: Vibrant Blueish-Purple #593EB8 */
+    --primary-foreground: 0 0% 100%; /* Light: White */
+    --secondary: 220 40% 94%; /* Light: Light grey-blue #E8ECF5 */
+    --secondary-foreground: 253 40% 25%; /* Light: Dark blue #2F2557 */
+    --muted: 220 40% 94%; /* Light: Light grey-blue */
+    --muted-foreground: 253 25% 55%; /* Light: Muted purple-grey #6F6699 */
+    --accent: 283 70% 60%; /* Light: Pinkish-Purple #B548E6 */
+    --accent-foreground: 0 0% 100%; /* Light: White */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 30% 88%;
-    --input: 210 30% 92%;
-    --ring: 217 90% 61%; /* Primary color for rings */
+    --border: 220 20% 88%; /* Light: Softer border #D8DDE8 */
+    --input: 220 30% 92%; /* Light: Light input background #E2E7F0 */
+    --ring: 256 70% 60%; /* Light: Primary color for rings #6A49CC */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -42,39 +42,40 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
-    --background: 220 10% 10%;
-    --foreground: 210 40% 98%;
-    --card: 220 10% 15%;
-    --card-foreground: 210 40% 98%;
-    --popover: 220 10% 15%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217 90% 61%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 20% 20%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 210 20% 20%;
-    --muted-foreground: 210 40% 70%;
-    --accent: 38 100% 50%;
-    --accent-foreground: 27 100% 13%;
+    --background: 253 50% 8%; /* Dark: Very dark blue/purple #0A071E */
+    --foreground: 220 14% 90%; /* Dark: Light gray #E2E5EB */
+    --card: 254 40% 13%; /* Dark: Slightly lighter dark blue/purple #15112B */
+    --card-foreground: 220 14% 90%; /* Dark: Light gray */
+    --popover: 254 40% 13%; /* Dark: Dark popover */
+    --popover-foreground: 220 14% 90%; /* Dark: Light gray */
+    --primary: 256 82% 60%; /* Dark: Vibrant Blueish-Purple #5E35B1 (adjusted from #582BEA) */
+    --primary-foreground: 220 14% 95%; /* Dark: Off-white #F0F2F5 */
+    --secondary: 253 40% 20%; /* Dark: Darker blue #241E47 */
+    --secondary-foreground: 220 14% 80%; /* Dark: Lighter gray #C8CCD3 */
+    --muted: 253 30% 25%; /* Dark: Muted dark blue #2E2754 */
+    --muted-foreground: 220 10% 65%; /* Dark: Softer gray #9FA6B0 */
+    --accent: 283 78% 64%; /* Dark: Pinkish-Purple #C155F0 */
+    --accent-foreground: 0 0% 100%; /* Dark: White */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 210 20% 25%;
-    --input: 210 20% 22%;
-    --ring: 217 90% 61%;
+    --border: 253 30% 30%; /* Dark: Subtle border #3A3169 */
+    --input: 253 30% 28%; /* Dark: Dark input background #342B5F */
+    --ring: 263 64% 65%; /* Dark: Lighter purple for rings #8D5FD9 (adjusted from #7F56D9) */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 253 50% 8%; /* Dark sidebar matches app background */
+    --sidebar-foreground: 220 14% 90%; /* Dark sidebar text matches app text */
+    --sidebar-primary: 256 82% 60%; /* Dark sidebar primary matches app primary */
+    --sidebar-primary-foreground: 220 14% 95%;
+    --sidebar-accent: 253 40% 20%; /* Dark sidebar accent */
+    --sidebar-accent-foreground: 220 14% 80%;
+    --sidebar-border: 253 30% 30%; /* Dark sidebar border */
+    --sidebar-ring: 263 64% 65%; /* Dark sidebar ring */
   }
 }
 
@@ -84,5 +85,11 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    /* Apply a subtle gradient to the body background for the "jace.ai" feel */
+    @apply bg-gradient-to-br from-background via-background to-secondary/30;
+  }
+
+  .dark body {
+     @apply bg-gradient-to-br from-background via-slate-950 to-background;
   }
 }
