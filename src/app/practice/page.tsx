@@ -12,8 +12,9 @@ interface PracticeOption {
   title: string;
   description: string;
   icon: React.ElementType;
-  href: string; // Placeholder for where it would link
-  imageHint?: string; // For potential future images
+  href: string; 
+  imageHint?: string;
+  isDirectLink: boolean; // To differentiate between direct nav and placeholder
 }
 
 const practiceOptions: PracticeOption[] = [
@@ -23,7 +24,8 @@ const practiceOptions: PracticeOption[] = [
     description: "Sharpen your ability to analyze and interpret written passages effectively.",
     icon: TextSelect,
     href: "/practice/verbal-reasoning",
-    imageHint: "text analysis"
+    imageHint: "text analysis",
+    isDirectLink: true,
   },
   {
     id: "decision-making",
@@ -31,7 +33,8 @@ const practiceOptions: PracticeOption[] = [
     description: "Develop skills in logical deduction, evaluating arguments, and making sound judgments.",
     icon: BrainCircuit,
     href: "/practice/decision-making",
-    imageHint: "logical thinking"
+    imageHint: "logical thinking",
+    isDirectLink: true,
   },
   {
     id: "quantitative-reasoning",
@@ -39,23 +42,26 @@ const practiceOptions: PracticeOption[] = [
     description: "Master numerical problem-solving and data interpretation techniques.",
     icon: Calculator,
     href: "/practice/quantitative-reasoning",
-    imageHint: "math calculation"
+    imageHint: "math calculation",
+    isDirectLink: true,
   },
   {
     id: "exams",
     title: "Full Mock Exams",
     description: "Simulate real UCAT exam conditions to test your preparedness and timing.",
     icon: ClipboardList,
-    href: "/practice/exams",
-    imageHint: "exam preparation"
+    href: "/practice/exams", // Placeholder, adjust if a sub-page is created
+    imageHint: "exam preparation",
+    isDirectLink: false, 
   },
   {
     id: "skills",
     title: "Targeted Skills Drills",
     description: "Focus on specific sub-skills within each UCAT section for tailored improvement.",
     icon: Sparkles,
-    href: "/practice/skills",
-    imageHint: "skill development"
+    href: "/practice/skills", // Placeholder, adjust if a sub-page is created
+    imageHint: "skill development",
+    isDirectLink: false,
   },
 ];
 
@@ -93,31 +99,26 @@ function PracticeOptionCard({ option }: PracticeOptionCardProps) {
         <CardTitle className="font-headline text-2xl mt-2">{option.title}</CardTitle>
       </CardHeader>
       <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
-        {/* Optional: Placeholder for an image if desired in future
-        <div className="relative w-full aspect-[16/10] mb-4 rounded-lg overflow-hidden shadow-lg">
-          <Image 
-              src="https://placehold.co/600x400.png" // Placeholder image
-              alt={option.title} 
-              data-ai-hint={option.imageHint || "practice abstract"}
-              layout="fill"
-              objectFit="cover" 
-              className="transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-        */}
         <p className="text-base text-muted-foreground mb-6 flex-grow">{option.description}</p>
-        <Button 
-          asChild
-          className="w-full mt-auto bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 text-primary-foreground shadow-md hover:shadow-primary/30 transition-all duration-300 transform group-hover:scale-105"
-          onClick={() => alert(`Navigating to ${option.title} practice area (placeholder). Route: ${option.href}`)} // Placeholder action
-        >
-          {/* For actual navigation, use Link: <Link href={option.href}> */}
-          <a> 
+        {option.isDirectLink ? (
+          <Button 
+            asChild
+            className="w-full mt-auto bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 text-primary-foreground shadow-md hover:shadow-primary/30 transition-all duration-300 transform group-hover:scale-105"
+          >
+            <Link href={option.href}>
+              Start Practice
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        ) : (
+          <Button
+            className="w-full mt-auto bg-gradient-to-r from-primary via-secondary to-accent hover:from-primary/90 hover:via-secondary/90 hover:to-accent/90 text-primary-foreground shadow-md hover:shadow-primary/30 transition-all duration-300 transform group-hover:scale-105"
+            onClick={() => alert(`Navigating to ${option.title} practice area (placeholder). Route: ${option.href}`)}
+          >
             Start Practice
             <ArrowRight className="ml-2 h-5 w-5" />
-          </a>
-          {/* </Link> */}
-        </Button>
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
