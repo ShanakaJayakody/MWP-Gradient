@@ -67,7 +67,7 @@ export default function HomePage() {
       {/* HERO SECTION */}
       <section id="hero" className="text-center py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
         <Image
-          src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/webhome_banner"
+          src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/web_frontpage_banner"
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
