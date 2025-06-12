@@ -16,8 +16,8 @@ html {
 
 @layer base {
   :root {
-    /* UPrep Theme - Primary Blue, Accent Orange, Background Light Gray */
-    --background: 220 13% 95%; /* Light Gray (#F0F2F5) */
+    /* UPrep Theme - Based on https://studio--uprep-mik7g.us-central1.hosted.app/ */
+    --background: 220 13% 95%; /* Light Gray */
     --foreground: 240 6% 10%; /* Dark Gray for text */
 
     --card: 0 0% 100%; /* White */
@@ -26,53 +26,51 @@ html {
     --popover: 0 0% 100%;
     --popover-foreground: 240 6% 10%;
 
-    --primary: 217 89% 61%; /* Saturated Blue (#4285F4) */
+    --primary: 217 89% 61%; /* Saturated Blue */
     --primary-foreground: 0 0% 98%; /* Almost White */
 
-    /* Updated secondary for more vibrant gradient midpoint */
-    --secondary: 220 86% 70%; /* Brighter, Lighter Blue for gradient via color */
-    --secondary-foreground: 240 6% 10%; /* Text on new secondary (light theme) */
+    --secondary: 220 86% 70%; /* Brighter, Lighter Blue for gradient midpoint */
+    --secondary-foreground: 240 6% 10%; 
 
-    --muted: 210 40% 90%; /* Muted gray */
-    --muted-foreground: 240 4% 46%; /* Muted text color */
+    --muted: 220 13% 91%; /* Cooler, blueish muted gray */
+    --muted-foreground: 220 10% 55%; /* Adjusted for new muted */
 
-    --accent: 36 100% 50%; /* Warm Orange (#FFA000) */
-    --accent-foreground: 240 6% 10%; /* Dark Gray for text on accent */
+    --accent: 36 100% 50%; /* Warm Orange */
+    --accent-foreground: 240 6% 10%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 40% 88%; /* Light border */
-    --input: 210 40% 92%; /* Light input background */
+    --border: 220 13% 88%; /* Cooler, blueish border */
+    --input: 220 13% 92%; /* Cooler, blueish input background */
     --ring: 217 89% 70%; /* Slightly lighter blue for ring */
 
     --radius: 0.5rem;
 
-     /* Dark Theme - Inverted for UPrep */
-    --dark-background: 240 6% 10%; /* Dark Gray for background */
-    --dark-foreground: 220 13% 95%; /* Light Gray for text */
+     /* Dark Theme - Based on https://studio--uprep-mik7g.us-central1.hosted.app/ */
+    --dark-background: 240 6% 10%; 
+    --dark-foreground: 220 13% 95%; 
 
-    --dark-card: 240 5% 15%; /* Darker card */
+    --dark-card: 240 5% 15%; 
     --dark-card-foreground: 220 13% 95%;
 
     --dark-popover: 240 5% 15%;
     --dark-popover-foreground: 220 13% 95%;
 
-    --dark-primary: 217 89% 61%; /* Saturated Blue - stays the same */
+    --dark-primary: 217 89% 61%; 
     --dark-primary-foreground: 0 0% 98%;
 
-    /* Updated dark-secondary for more vibrant gradient midpoint in dark theme */
-    --dark-secondary: 220 70% 45%; /* Darker, Saturated Blue for dark theme gradient via color */
-    --dark-secondary-foreground: 220 13% 95%; /* Text on new dark-secondary */
+    --dark-secondary: 220 70% 45%; /* Darker, Saturated Blue for dark theme gradient midpoint */
+    --dark-secondary-foreground: 220 13% 95%;
 
-    --dark-muted: 240 4% 25%; /* Darker muted */
+    --dark-muted: 220 13% 20%; /* Cooler, blueish dark muted */
     --dark-muted-foreground: 220 10% 65%;
 
-    --dark-accent: 36 100% 50%; /* Warm Orange - stays the same */
+    --dark-accent: 36 100% 50%; 
     --dark-accent-foreground: 240 6% 10%;
 
-    --dark-border: 240 4% 30%; /* Darker border */
-    --dark-input: 240 4% 28%; /* Darker input */
+    --dark-border: 220 13% 25%; /* Cooler, blueish dark border */
+    --dark-input: 220 13% 22%; /* Cooler, blueish dark input */
     --dark-ring: 217 89% 70%;
   }
 
@@ -265,3 +263,4 @@ html {
 #results-screen label {
     @apply text-foreground;
 }
+
