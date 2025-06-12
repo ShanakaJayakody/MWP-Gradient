@@ -3,79 +3,95 @@
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'PT Sans', sans-serif; /* Default body font */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif; /* Headline font */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {
   :root {
-    /* jace.ai inspired Dark Theme First */
-    --background: 253 50% 8%; /* Dark: Very dark blue/purple #0A071E */
-    --foreground: 220 14% 90%; /* Dark: Light gray #E2E5EB */
-    --card: 254 40% 13%; /* Dark: Slightly lighter dark blue/purple #15112B */
-    --card-foreground: 220 14% 90%; /* Dark: Light gray */
-    --popover: 254 40% 13%; /* Dark: Dark popover */
-    --popover-foreground: 220 14% 90%; /* Dark: Light gray */
-    --primary: 256 82% 60%; /* Dark: Vibrant Blueish-Purple #5E35B1 (used as gradient start) */
-    --primary-foreground: 220 14% 95%; /* Dark: Off-white #F0F2F5 */
-    --secondary: 283 78% 64%; /* Dark: Pinkish-Purple #C155F0 (used as gradient mid/end) */
-    --secondary-foreground: 220 14% 80%; /* Dark: Lighter gray #C8CCD3 */
-    --muted: 253 30% 25%; /* Dark: Muted dark blue #2E2754 */
-    --muted-foreground: 220 10% 65%; /* Dark: Softer gray #9FA6B0 */
-    --accent: 300 80% 65%; /* Dark: Bright Pink/Magenta for accents or gradient end #E64FD4 */
-    --accent-foreground: 0 0% 100%; /* Dark: White */
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 253 30% 30%; /* Dark: Subtle border #3A3169 */
-    --input: 253 30% 28%; /* Dark: Dark input background #342B5F */
-    --ring: 263 64% 65%; /* Dark: Lighter purple for rings #8D5FD9 */
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --radius: 0.5rem;
+    /* UPrep Theme - Primary Blue, Accent Orange, Background Light Gray */
+    --background: 220 13% 95%; /* Light Gray (#F0F2F5) */
+    --foreground: 240 6% 10%; /* Dark Gray for text */
 
-    /* Sidebar variables to match dark theme */
-    --sidebar-background: 253 50% 8%; 
-    --sidebar-foreground: 220 14% 90%;
-    --sidebar-primary: 256 82% 60%;
-    --sidebar-primary-foreground: 220 14% 95%;
-    --sidebar-accent: 253 40% 20%;
-    --sidebar-accent-foreground: 220 14% 80%;
-    --sidebar-border: 253 30% 30%;
-    --sidebar-ring: 263 64% 65%;
-  }
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 240 6% 10%;
 
-  .light {
-    /* jace.ai inspired Light Theme (less focus, but providing contrast) */
-    --background: 220 60% 97%; /* Light: Very light blueish grey #F2F5FA */
-    --foreground: 253 50% 15%; /* Light: Dark purplish text #1D173A */
-    --card: 0 0% 100%; /* Light: White */
-    --card-foreground: 253 50% 15%; /* Light: Dark purplish text */
-    --popover: 0 0% 100%; /* Light: White */
-    --popover-foreground: 253 50% 15%; /* Light: Dark purplish text */
-    --primary: 256 70% 55%; /* Light: Vibrant Blueish-Purple #593EB8 */
-    --primary-foreground: 0 0% 100%; /* Light: White */
-    --secondary: 283 70% 60%; /* Light: Pinkish-Purple #B548E6 */
-    --secondary-foreground: 0 0% 100%; /* Light: White */
-    --muted: 220 40% 94%; /* Light: Light grey-blue #E8ECF5 */
-    --muted-foreground: 253 25% 55%; /* Light: Muted purple-grey #6F6699 */
-    --accent: 300 75% 55%; /* Light: Bright Pink/Magenta #D93BA8 */
-    --accent-foreground: 0 0% 100%; /* Light: White */
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 6% 10%;
+
+    --primary: 217 89% 61%; /* Saturated Blue (#4285F4) */
+    --primary-foreground: 0 0% 98%; /* Almost White */
+
+    --secondary: 210 40% 96.1%; /* Lighter gray for secondary elements */
+    --secondary-foreground: 240 6% 10%;
+
+    --muted: 210 40% 90%; /* Muted gray */
+    --muted-foreground: 240 4% 46%; /* Muted text color */
+
+    --accent: 36 100% 50%; /* Warm Orange (#FFA000) */
+    --accent-foreground: 240 6% 10%; /* Dark Gray for text on accent */
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 220 20% 88%; /* Light: Softer border #D8DDE8 */
-    --input: 220 30% 92%; /* Light: Light input background #E2E7F0 */
-    --ring: 256 70% 60%; /* Light: Primary color for rings #6A49CC */
-    
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+
+    --border: 210 40% 88%; /* Light border */
+    --input: 210 40% 92%; /* Light input background */
+    --ring: 217 89% 70%; /* Slightly lighter blue for ring */
+
+    --radius: 0.5rem;
+
+     /* Dark Theme - Inverted for UPrep */
+    --dark-background: 240 6% 10%; /* Dark Gray for background */
+    --dark-foreground: 220 13% 95%; /* Light Gray for text */
+
+    --dark-card: 240 5% 15%; /* Darker card */
+    --dark-card-foreground: 220 13% 95%;
+
+    --dark-popover: 240 5% 15%;
+    --dark-popover-foreground: 220 13% 95%;
+
+    --dark-primary: 217 89% 61%; /* Saturated Blue - stays the same */
+    --dark-primary-foreground: 0 0% 98%;
+
+    --dark-secondary: 240 4% 18%; /* Darker secondary */
+    --dark-secondary-foreground: 220 13% 95%;
+
+    --dark-muted: 240 4% 25%; /* Darker muted */
+    --dark-muted-foreground: 220 10% 65%;
+
+    --dark-accent: 36 100% 50%; /* Warm Orange - stays the same */
+    --dark-accent-foreground: 240 6% 10%;
+
+    --dark-border: 240 4% 30%; /* Darker border */
+    --dark-input: 240 4% 28%; /* Darker input */
+    --dark-ring: 217 89% 70%;
+  }
+
+  .dark {
+    --background: var(--dark-background);
+    --foreground: var(--dark-foreground);
+    --card: var(--dark-card);
+    --card-foreground: var(--dark-card-foreground);
+    --popover: var(--dark-popover);
+    --popover-foreground: var(--dark-popover-foreground);
+    --primary: var(--dark-primary);
+    --primary-foreground: var(--dark-primary-foreground);
+    --secondary: var(--dark-secondary);
+    --secondary-foreground: var(--dark-secondary-foreground);
+    --muted: var(--dark-muted);
+    --muted-foreground: var(--dark-muted-foreground);
+    --accent: var(--dark-accent);
+    --accent-foreground: var(--dark-accent-foreground);
+    --border: var(--dark-border);
+    --input: var(--dark-input);
+    --ring: var(--dark-ring);
   }
 }
 
@@ -85,12 +101,129 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    /* Default to dark theme body gradient inspired by jace.ai */
-    @apply bg-gradient-to-br from-[hsl(var(--background))] via-slate-900 to-[hsl(var(--background))];
   }
+}
 
-  .light body {
-     /* Light theme body gradient - less prominent than dark, more subtle */
-    @apply bg-gradient-to-br from-[hsl(var(--background))] via-slate-100 to-[hsl(var(--background))];
-  }
+/* Additional global styles for Verbal Reasoning Practice page specific elements if needed */
+.header-bar {
+    @apply flex justify-between items-center p-3 bg-card text-card-foreground border-b border-border shadow-sm;
+}
+.font-size-button {
+    @apply p-1 border border-border rounded text-sm hover:bg-accent/10;
+}
+#timer {
+    @apply bg-primary text-primary-foreground;
+}
+.flagged {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+}
+.main-content-area {
+    @apply flex-grow flex flex-col md:flex-row overflow-hidden;
+}
+.passage-column, .question-column {
+    @apply p-4 overflow-y-auto h-[calc(100vh-160px)] md:h-auto md:flex-1; /* Adjust height as needed */
+}
+.passage-column {
+    @apply border-b md:border-b-0 md:border-r border-border;
+}
+.option-label {
+    @apply flex items-center p-3 border border-border rounded-md cursor-pointer hover:bg-accent/20 transition-colors;
+    /* Add space for radio button */
+    padding-left: 2.5rem; 
+    position: relative;
+}
+.option-label input[type="radio"] {
+    @apply absolute left-3 top-1/2 -translate-y-1/2 accent-primary;
+}
+.selected-answer {
+    @apply bg-primary/20 border-primary;
+}
+.explanation-box {
+    @apply mt-4 p-3 bg-muted/50 border border-border rounded-md text-sm;
+}
+.footer-bar {
+    @apply flex justify-between items-center p-3 bg-card text-card-foreground border-t border-border shadow-sm;
+}
+.review-grid-button {
+    @apply p-3 border rounded-md text-center transition-colors;
+}
+.review-grid-button-answered {
+    @apply bg-green-500/20 border-green-500 text-green-700;
+}
+.review-grid-button-unanswered {
+    @apply bg-muted/30 hover:bg-muted/50;
+}
+.review-flagged {
+    @apply ring-2 ring-offset-1 ring-destructive;
+}
+
+.result-box {
+    @apply w-16 h-16 md:w-20 md:h-20 border-2 rounded-md flex items-center justify-center cursor-pointer transition-all relative shadow-md hover:shadow-lg;
+}
+.result-box-correct {
+    @apply bg-green-100 border-green-500 text-green-700 hover:bg-green-200;
+}
+.result-box-incorrect {
+    @apply bg-red-100 border-red-500 text-red-700 hover:bg-red-200;
+}
+.result-box-flagged::after {
+    content: "🚩";
+    @apply absolute -top-2 -right-2 text-lg;
+}
+.time-spent {
+    @apply text-xs font-semibold;
+}
+.question-num-label {
+    @apply text-sm mt-1 text-muted-foreground;
+}
+
+/* Navigator Modal */
+.modal {
+    @apply fixed inset-0 bg-black/50 items-center justify-center z-50;
+}
+.modal-content {
+    @apply bg-card p-5 rounded-lg shadow-xl max-w-md w-full mx-4;
+}
+#navigator-grid button {
+    @apply border border-border hover:bg-accent/20;
+}
+#navigator-grid .nav-current {
+    @apply bg-primary text-primary-foreground;
+}
+#navigator-grid .nav-answered {
+    @apply bg-green-500/20;
+}
+#navigator-grid .nav-flagged {
+    @apply ring-1 ring-destructive;
+}
+
+/* Setup Screen Specific Styles */
+#setup-screen .primary-button {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+}
+#setup-screen .danger-button {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+}
+#results-screen .danger-button {
+     @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+}
+#review-screen .danger-button {
+    @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
+}
+
+/* Specific font overrides based on original CSS if Tailwind defaults aren't enough */
+#exam-title {
+    font-family: 'Poppins', sans-serif;
+}
+.passage-column h3, .question-column h4 {
+     font-family: 'Poppins', sans-serif;
+}
+#results-screen h2, #results-screen h3 {
+    font-family: 'Poppins', sans-serif;
+}
+#review-screen h2 {
+     font-family: 'Poppins', sans-serif;
+}
+#setup-screen h1 {
+    font-family: 'Poppins', sans-serif;
 }
