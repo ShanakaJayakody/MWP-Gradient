@@ -90,7 +90,7 @@ export default function HomePage() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
             Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
           </p>
-          <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center">
+          <div className="mt-10 flex flex-col items-center space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <Button
               size="lg"
               asChild
@@ -261,5 +261,4 @@ export default function HomePage() {
     </div>
   );
 }
-
     
