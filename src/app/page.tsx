@@ -65,13 +65,13 @@ export default function HomePage() {
   return (
     <div className="container mx-auto py-8 px-4">
       {/* HERO SECTION */}
-      <section id="hero" className="text-center py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
+      <section id="hero" className="py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
         <Image
           src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/web_frontpage_banner"
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="-z-10 opacity-60"
+          className="-z-10 opacity-70"
           priority
           data-ai-hint="abstract background"
         />
@@ -79,31 +79,34 @@ export default function HomePage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
-        <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
-          Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
-          <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
-            Smarter UCAT prep, for future doctors.
-          </span>
-        </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-          Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
-        </p>
-        <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center">
-          <Button
-            size="lg"
-            asChild
-            className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
-          >
-            <Link href="/auth/signup">Start my free trial</Link>
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            asChild
-            className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3 w-full sm:w-auto"
-          >
-            <Link href="/#why-us">Explore MedWithPurpose Courses</Link>
-          </Button>
+        
+        <div className="relative z-10 text-center">
+          <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
+            Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
+            <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
+              Smarter UCAT prep, for future doctors.
+            </span>
+          </h1>
+          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
+            Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
+          </p>
+          <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center">
+            <Button
+              size="lg"
+              asChild
+              className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
+            >
+              <Link href="/auth/signup">Start my free trial</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              asChild
+              className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3 w-full sm:w-auto"
+            >
+              <Link href="/#why-us">Explore MedWithPurpose Courses</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -258,3 +261,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
