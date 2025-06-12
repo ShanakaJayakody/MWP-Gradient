@@ -3,10 +3,10 @@ import type { Course } from "@/types/classroom";
 
 export const mockCourses: Course[] = [
   {
-    id: "ucat-verbal-reasoning-101",
-    title: "UCAT Verbal Reasoning Mastery",
+    id: "verbal-reasoning-foundations",
+    title: "Verbal Reasoning Foundations",
     description: "Complete guide to excelling in the verbal reasoning section with AI-powered insights.",
-    imageUrl: "https://placehold.co/600x400.png",
+    imageUrl: "https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/VR_banner",
     instructor: "Dr. Sarah Johnson",
     duration: "12 hours",
     progress: 65, // Initial progress
@@ -68,49 +68,43 @@ export const mockCourses: Course[] = [
     ],
   },
   {
-    id: "ucat-quantitative-reasoning-101",
-    title: "Quantitative Reasoning Fundamentals",
-    description: "Master mathematical concepts and problem-solving techniques with adaptive learning.",
-    imageUrl: "https://placehold.co/600x400.png",
+    id: "decision-making-foundations",
+    title: "Decision Making Foundations",
+    description: "Master logical puzzles and decision-making processes with adaptive learning.",
+    imageUrl: "https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/DM_Banner",
     instructor: "Prof. Michael Chen",
     duration: "10 hours",
     progress: 30,
     modules: [
       {
-        id: "qr-module-1",
-        title: "Core Mathematical Concepts for QR",
+        id: "dm-module-1",
+        title: "Core Concepts in Decision Making",
         lessons: [
           {
-            id: "qr-lesson-1-1",
-            title: "Percentages, Fractions, and Ratios",
-            textContent: "<p>This lesson provides a comprehensive review of percentages, fractions, and ratios, including common calculations and conversions needed for the UCAT QR section.</p>",
-            videoUrl: "https://www.youtube.com/watch?v=qr_video_1",
-            actionItems: ["Complete practice set on percentages.", "Memorize key fraction-decimal equivalents."],
-            files: [{id: "file-qr-1-1-formulas", name: "QR Formulas Sheet.pdf", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", type: "pdf"}],
+            id: "dm-lesson-1-1",
+            title: "Introduction to Logical Puzzles",
+            textContent: "<p>This lesson provides a comprehensive review of logical puzzles, including common types and solving strategies for the UCAT DM section.</p>",
+            videoUrl: "https://www.youtube.com/watch?v=dm_video_1",
+            actionItems: ["Complete practice set on syllogisms.", "Review logical fallacies."],
+            files: [{id: "file-dm-1-1-puzzles", name: "DM Puzzle Pack.pdf", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", type: "pdf"}],
             isCompleted: true,
           },
           {
-            id: "qr-lesson-1-2",
-            title: "Data Interpretation: Charts & Graphs",
-            textContent: "<p>Learn to efficiently interpret various types of charts, graphs, and tables commonly found in the QR section. Focus on speed and accuracy.</p>",
-            isCompleted: false,
-          },
-          {
-            id: "qr-lesson-1-3",
-            title: "Basic Algebraic Manipulation",
-            textContent: "<p>Covering the basics of algebraic manipulation relevant to solving UCAT QR problems, including rearranging equations and solving for unknowns.</p>",
+            id: "dm-lesson-1-2",
+            title: "Interpreting Probabilistic Information",
+            textContent: "<p>Learn to efficiently interpret scenarios involving probability and make sound decisions based on statistical information.</p>",
             isCompleted: false,
           },
         ],
       },
        {
-        id: "qr-module-2",
-        title: "QR Problem Solving Strategies",
+        id: "dm-module-2",
+        title: "DM Problem Solving Strategies",
         lessons: [
           {
-            id: "qr-lesson-2-1",
-            title: "Time Management in Quantitative Reasoning",
-            textContent: "<p>Essential tips and strategies for managing your time effectively during the QR section to maximize your score.</p>",
+            id: "dm-lesson-2-1",
+            title: "Evaluating Arguments and Evidence",
+            textContent: "<p>Essential tips and strategies for critically evaluating arguments and the strength of evidence presented.</p>",
             isCompleted: false,
           },
         ],
@@ -118,35 +112,35 @@ export const mockCourses: Course[] = [
     ],
   },
   {
-    id: "ucat-abstract-reasoning-patterns",
-    title: "Abstract Reasoning Patterns",
-    description: "Develop pattern recognition and logical thinking skills through interactive exercises.",
-    imageUrl: "https://placehold.co/600x400.png",
+    id: "quantitative-reasoning-foundations",
+    title: "Quantitative Reasoning Foundations",
+    description: "Develop numerical problem-solving skills through interactive exercises.",
+    imageUrl: "https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/QR_banner",
     instructor: "Dr. Emma Wilson",
     duration: "8 hours",
     progress: 0,
     modules: [
       {
-        id: "ar-module-1",
-        title: "Introduction to Abstract Reasoning",
+        id: "qr-module-1",
+        title: "Introduction to Quantitative Reasoning",
         lessons: [
           {
-            id: "ar-lesson-1-1",
-            title: "Common Pattern Types (SCANS)",
-            textContent: "<p>Identifying common abstract patterns using frameworks like SCANS (Shape, Colour, Arrangement, Number, Size) and other mnemonic devices.</p>",
-            videoUrl: "https://www.youtube.com/watch?v=ar_video_intro",
+            id: "qr-lesson-1-1",
+            title: "Essential Mathematical Operations",
+            textContent: "<p>Covering percentages, ratios, rates, and other fundamental mathematical operations required for the QR section.</p>",
+            videoUrl: "https://www.youtube.com/watch?v=qr_video_intro",
             isCompleted: false,
           },
         ],
       },
       {
-        id: "ar-module-2",
-        title: "Advanced Abstract Reasoning",
+        id: "qr-module-2",
+        title: "Advanced Quantitative Reasoning",
         lessons: [
           {
-            id: "ar-lesson-2-1",
-            title: "Tackling Complex Sequences & Matrices",
-            textContent: "<p>Strategies for breaking down and solving complex visual sequences and matrix-based AR problems.</p>",
+            id: "qr-lesson-2-1",
+            title: "Tackling Complex Charts & Data Sets",
+            textContent: "<p>Strategies for breaking down and solving problems involving complex charts, tables, and multi-step calculations.</p>",
             isCompleted: false,
           },
         ],
@@ -171,3 +165,4 @@ export const getLessonById = (courseId: string, lessonId: string) => {
   }
   return undefined;
 };
+
