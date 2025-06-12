@@ -77,7 +77,10 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
-          MedWithPurpose: Smarter UCAT prep, crafted for future doctors.
+          Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
+          <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
+            Smarter UCAT prep, for future doctors.
+          </span>
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
           Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
