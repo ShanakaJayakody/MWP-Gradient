@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ArrowRight, Cpu, Repeat, CalendarClock, SlidersHorizontal, Award, Leaf } from "lucide-react";
+import { ArrowRight, Award, CalendarClock, Cpu, Leaf, Repeat, SlidersHorizontal } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -90,9 +90,9 @@ export default function HomePage() {
           <Button
             size="lg"
             asChild
-            className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
+            className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
           >
-            <Link href="/auth/signup">Start My Free Trial on MedWithPurpose</Link>
+            <Link href="/auth/signup">Start my free trial</Link>
           </Button>
           <Button
             size="lg"
@@ -149,8 +149,8 @@ export default function HomePage() {
           ))}
         </div>
         <div className="text-center mt-12">
-          <Button size="lg" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="/auth/signup">Run My Free Diagnostic</Link>
+          <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            <Link href="/auth/signup">Run my free diagnostic mock</Link>
           </Button>
         </div>
       </section>
@@ -220,8 +220,8 @@ export default function HomePage() {
         </Card>
         <p className="text-center text-muted-foreground mt-6">14-day money-back promise—risk-free.</p>
         <div className="text-center mt-8">
-          <Button size="lg" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="/auth/signup">Unlock MedWithPurpose Pro</Link>
+          <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+            <Link href="/auth/signup">Try MedWithPurpose Pro For Free</Link>
           </Button>
         </div>
       </section>
@@ -245,10 +245,10 @@ export default function HomePage() {
             <p className="text-xl text-foreground font-semibold mb-6">
               “Join 5000+ Australian candidates who trusted MedWithPurpose for their UCAT journey.”
             </p>
-            <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
               <Link href="/auth/signup">
                 <span className="inline-flex items-center">
-                  Start Free on MedWithPurpose
+                  Start Free Trial
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </span>
               </Link>
