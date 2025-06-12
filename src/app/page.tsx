@@ -71,11 +71,11 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="-z-20 opacity-50"
+          className="-z-10 opacity-30"
           priority
           data-ai-hint="abstract background"
         />
-        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
@@ -121,7 +121,6 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
                 <p className="text-base text-muted-foreground mb-2 flex-grow">{feature.description}</p>
-                {feature.source && <p className="text-xs text-muted-foreground/70 italic">{feature.source}</p>}
               </CardContent>
             </Card>
           ))}
@@ -146,7 +145,6 @@ export default function HomePage() {
               </div>
               <h3 className="font-headline text-xl font-semibold mb-2">{step.title}</h3>
               <p className="text-muted-foreground mb-1">{step.description}</p>
-              {step.source && <p className="text-xs text-muted-foreground/70 italic">{step.source}</p>}
             </div>
           ))}
         </div>
@@ -239,7 +237,6 @@ export default function HomePage() {
               <div key={index}>
                 <h3 className="font-headline text-xl font-semibold text-foreground mb-2">"{faq.question}"</h3>
                 <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
-                {faq.source && <p className="text-xs text-muted-foreground/70 italic mt-1">{faq.source}</p>}
               </div>
             ))}
           </div>
