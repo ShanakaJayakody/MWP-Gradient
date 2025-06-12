@@ -1,90 +1,30 @@
+"use client"; // This component now uses usePathname, so it needs to be a client component
 
-"use client"
+import type { PropsWithChildren } from 'react';
+import { usePathname } from 'next/navigation'; // Import usePathname
+import { Header } from './header';
+import { Toaster } from '@/components/ui/toaster';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Home, BookOpen, ClipboardList, CalendarDays, TrendingUp, Settings } from "lucide-react";
-import { SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarGroup, SidebarGroupLabel } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
-
-const mainNavItems = [
-  { href: "/dashboard/home", label: "Home", icon: Home },
-  { href: "/classroom", label: "Classroom", icon: BookOpen },
-  { href: "/practice", label: "Practice", icon: ClipboardList },
-  { href: "/calendar", label: "Calendar", icon: CalendarDays },
-  { href: "/progress", label: "Progress", icon: TrendingUp },
-];
-
-const adminNavItems = [
-    { href: "/admin/create-course", label: "Create Course", icon: Settings },
-    // Add more admin links here if needed e.g.
-    // { href: "/admin/manage-users", label: "Manage Users", icon: Users },
-    // { href: "/admin/settings", label: "Platform Settings", icon: SettingsIcon },
-];
-
-
-export function DashboardSidebarNav() {
+export function MainLayout({ children }: PropsWithChildren) {
   const pathname = usePathname();
+  // Only show the public Header if the current path does NOT start with /dashboard
+  const showPublicHeader = !pathname.startsWith('/dashboard');
 
   return (
-    <>
-      <SidebarGroup>
-        <SidebarMenu>
-          {mainNavItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <Link href={item.href} passHref legacyBehavior>
-                <SidebarMenuButton
-                  asChild
-                  className={cn(
-                    pathname === item.href || (item.href !== "/dashboard/home" && pathname.startsWith(item.href))
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "hover:bg-sidebar-accent/80"
-                  )}
-                  tooltip={{
-                    children: item.label,
-                    className: "bg-primary text-primary-foreground"
-                  }}
-                >
-                  <a>
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.label}</span>
-                  </a>
-                </SidebarMenuButton>
-              </Link>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroup>
-      
-      {/* Admin Section - Conditionally render this based on user role in a real app */}
-      <SidebarGroup className="mt-auto border-t border-sidebar-border pt-2">
-        <SidebarGroupLabel>Admin</SidebarGroupLabel>
-        <SidebarMenu>
-          {adminNavItems.map((item) => (
-             <SidebarMenuItem key={item.href}>
-             <Link href={item.href} passHref legacyBehavior>
-               <SidebarMenuButton
-                 asChild
-                 className={cn(
-                   pathname.startsWith(item.href)
-                     ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                     : "hover:bg-sidebar-accent/80"
-                 )}
-                 tooltip={{
-                    children: item.label,
-                    className: "bg-primary text-primary-foreground"
-                  }}
-               >
-                 <a>
-                   <item.icon className="h-5 w-5" />
-                   <span>{item.label}</span>
-                 </a>
-               </SidebarMenuButton>
-             </Link>
-           </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarGroup>
-    </>
+    <div className="relative flex min-h-screen flex-col">
+      {showPublicHeader && <Header />}
+      {/* 'children' will be the page content or a nested layout like DashboardLayout */}
+      <div className="flex-1">{children}</div> 
+      <Toaster />
+      {/* Optional Footer
+      <footer className="py-6 md:px-8 md:py-0">
+        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+          <p className="text-center text-sm leading-loose text-muted-foreground md:text-left">
+            © {new Date().getFullYear()} UPrep. All rights reserved.
+          </p>
+        </div>
+      </footer>
+      */}
+    </div>
   );
 }
