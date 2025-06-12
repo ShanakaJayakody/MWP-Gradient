@@ -2,10 +2,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Added CardContent
 import { ArrowRight, TextSelect, BrainCircuit, Calculator, ClipboardList, Sparkles } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image"; // Added for consistency if we use images later
+// import Image from "next/image"; // Not currently used
 
 interface PracticeOption {
   id: string;
@@ -14,7 +14,7 @@ interface PracticeOption {
   icon: React.ElementType;
   href: string; 
   imageHint?: string;
-  isDirectLink: boolean; // To differentiate between direct nav and placeholder
+  isDirectLink: boolean; 
 }
 
 const practiceOptions: PracticeOption[] = [
@@ -50,7 +50,7 @@ const practiceOptions: PracticeOption[] = [
     title: "Full Mock Exams",
     description: "Simulate real UCAT exam conditions to test your preparedness and timing.",
     icon: ClipboardList,
-    href: "/practice/exams", // Placeholder, adjust if a sub-page is created
+    href: "/practice/exams", 
     imageHint: "exam preparation",
     isDirectLink: false, 
   },
@@ -59,7 +59,7 @@ const practiceOptions: PracticeOption[] = [
     title: "Targeted Skills Drills",
     description: "Focus on specific sub-skills within each UCAT section for tailored improvement.",
     icon: Sparkles,
-    href: "/practice/skills", // Placeholder, adjust if a sub-page is created
+    href: "/practice/skills", 
     imageHint: "skill development",
     isDirectLink: false,
   },
