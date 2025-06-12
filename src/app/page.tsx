@@ -71,16 +71,16 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="-z-10 opacity-100"
+          className="opacity-100" 
           priority
           data-ai-hint="abstract background"
         />
-        <div className="absolute inset-0 -z-20 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none"> 
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         
-        <div className="relative z-10 text-center">
+        <div className="relative z-10 text-center"> 
           <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
             Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
             <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
