@@ -12,44 +12,38 @@ export default function HomePage() {
       icon: <Cpu className="h-10 w-10 text-accent mb-4" />,
       title: "AI-Personalised Pathways",
       description: "AI-driven lessons help students learn 2× more in half the time compared with static modules.",
-      source: "sciencedirect.com"
     },
     {
       icon: <Repeat className="h-10 w-10 text-accent mb-4" />,
       title: "Retrieval-Practice Engine",
       description: "Regular low-stakes testing boosts long-term retention better than re-reading— the classic testing effect.",
-      source: "sciencedirect.com"
     },
     {
       icon: <CalendarClock className="h-10 w-10 text-accent mb-4" />,
       title: "Spaced-Repetition Scheduler",
       description: "Algorithmic spacing is up to 89 % more effective than cramming.",
-      source: "intellecs.ai"
     },
     {
       icon: <SlidersHorizontal className="h-10 w-10 text-accent mb-4" />,
       title: "Adaptive Testing",
       description: "Difficulty adjusts in real time, lowering test anxiety and drop-out by double-digit margins.",
-      source: "files.eric.ed.gov"
     },
     {
       icon: <Award className="h-10 w-10 text-accent mb-4" />,
       title: "Expert-Built Content",
       description: "Created by 99ᵗʰ-percentile tutors and mapped to 2024 UCAT averages (Mean 2588; 15 240 sitters).",
-      source: "ucat.edu.au"
     },
     {
       icon: <Leaf className="h-10 w-10 text-accent mb-4" />,
       title: "Purpose-Led Mission",
       description: "Every licence funds free masterclasses for rural RA 2-7 schools—“preparation with purpose.”",
-      source: "(Add your impact stats here.)"
     },
   ];
 
   const howItWorksSteps = [
-    { title: "Assess", description: "A 30-min diagnostic benchmarks you against the latest UCAT deciles.", source: "ucat.edu.au" },
-    { title: "Adapt", description: "AI serves questions in your personal “Goldilocks zone,” stretching skills without overwhelm.", source: "sciencedirect.com" },
-    { title: "Accelerate", description: "Spaced reminders keep you on track; instant feedback lifts engagement 25 % on average.", source: "timesofindia.indiatimes.com" },
+    { title: "Assess", description: "A 30-min diagnostic benchmarks you against the latest UCAT deciles." },
+    { title: "Adapt", description: "AI serves questions in your personal “Goldilocks zone,” stretching skills without overwhelm." },
+    { title: "Accelerate", description: "Spaced reminders keep you on track; instant feedback lifts engagement 25 % on average." },
   ];
 
   const successStories = [
@@ -64,7 +58,7 @@ export default function HomePage() {
   ];
 
   const faqs = [
-    { question: "Is MedWithPurpose content up-to-date?", answer: "Yes—our question writers refresh banks annually using the newest UCAT specifications and statistics.", source: "ucat.edu.au" },
+    { question: "Is MedWithPurpose content up-to-date?", answer: "Yes—our question writers refresh banks annually using the newest UCAT specifications and statistics." },
     { question: "Will AI shortcuts hurt real learning?", answer: "No. Adaptive retrieval and spacing deepen mastery; dozens of peer-reviewed studies back the approach." },
   ];
 
@@ -93,7 +87,6 @@ export default function HomePage() {
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
           Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
-          <span className="block text-xs mt-1">Source: marketermilk.com</span>
         </p>
         <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center">
           <Button
@@ -128,7 +121,7 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
                 <p className="text-base text-muted-foreground mb-2 flex-grow">{feature.description}</p>
-                <p className="text-xs text-muted-foreground/70 italic">{feature.source}</p>
+                {feature.source && <p className="text-xs text-muted-foreground/70 italic">{feature.source}</p>}
               </CardContent>
             </Card>
           ))}
@@ -153,7 +146,7 @@ export default function HomePage() {
               </div>
               <h3 className="font-headline text-xl font-semibold mb-2">{step.title}</h3>
               <p className="text-muted-foreground mb-1">{step.description}</p>
-              <p className="text-xs text-muted-foreground/70 italic">{step.source}</p>
+              {step.source && <p className="text-xs text-muted-foreground/70 italic">{step.source}</p>}
             </div>
           ))}
         </div>
@@ -268,5 +261,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
