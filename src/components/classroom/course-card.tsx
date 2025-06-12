@@ -1,7 +1,8 @@
+
 import Link from "next/link";
 import Image from "next/image";
 import type { Course } from "@/types/classroom";
-import { Card, CardContent } from "@/components/ui/card"; // Removed CardHeader, CardFooter, CardTitle, CardDescription as we'll structure differently
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -68,7 +69,7 @@ export function CourseCard({ course }: CourseCardProps) {
           )}
         </div>
 
-        {course.progress !== undefined && ( // Show progress bar even if 0% to be consistent
+        {course.progress !== undefined && ( 
           <div className="mb-4">
             <div className="flex justify-between text-xs text-muted-foreground mb-1">
               <span>Progress</span>
@@ -78,7 +79,10 @@ export function CourseCard({ course }: CourseCardProps) {
           </div>
         )}
         
-        <Button asChild className="w-full mt-auto justify-between bg-muted hover:bg-primary/20 text-foreground hover:text-primary transition-colors">
+        <Button 
+          asChild 
+          className="w-full mt-auto justify-between bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground shadow-md hover:shadow-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 group-hover:scale-105"
+        >
           <Link href={`/classroom/${course.id}`}>
             <span>{hasProgress && course.progress < 100 ? "Continue Learning" : (course.progress === 100 ? "Review Course" : "Start Course")}</span>
             <ArrowRight className="ml-2 h-4 w-4" />

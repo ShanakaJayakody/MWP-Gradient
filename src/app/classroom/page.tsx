@@ -1,3 +1,4 @@
+
 import { CourseCard } from "@/components/classroom/course-card";
 import { mockCourses } from "./data";
 
@@ -5,7 +6,9 @@ export default function ClassroomPage() {
   return (
     <div className="container mx-auto py-8 px-4">
       <header className="mb-10 text-center">
-        <h1 className="font-headline text-4xl font-bold mb-3">Classroom</h1>
+        <h1 className="font-headline text-4xl md:text-5xl font-bold mb-3">
+          Your <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Personalised</span> Classroom
+        </h1>
         <p className="text-lg text-muted-foreground">
           Browse our available courses and start your UCAT preparation journey.
         </p>
