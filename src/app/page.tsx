@@ -63,7 +63,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto py-8 px-4">
+    <div>
       {/* HERO SECTION */}
       <section id="hero" className="py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
         <Image
@@ -71,16 +71,16 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="opacity-60" 
+          className="opacity-60"
           priority
           data-ai-hint="abstract background"
         />
-        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none"> 
+        <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         
-        <div className="relative z-10 text-center"> 
+        <div className="relative z-10 text-center px-4">
           <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
             Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
             <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
@@ -112,73 +112,79 @@ export default function HomePage() {
 
       {/* WHY MEDWITHPURPOSE? SECTION */}
       <section id="why-us" className="py-16 md:py-24">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-16">
-          Why <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>?
-        </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {whyUsFeatures.map((feature, index) => (
-            <Card key={index} className="group bg-card/70 backdrop-blur-md border-border/30 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden">
-              <CardHeader className="items-center text-center p-6">
-                {feature.icon}
-                <CardTitle className="font-headline text-xl mt-2">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
-                <p className="text-base text-muted-foreground mb-2 flex-grow">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary">
-            <Link href="/#success-stories">See Why Students Choose MedWithPurpose</Link>
-          </Button>
+        <div className="container mx-auto px-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-16">
+            Why <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>?
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {whyUsFeatures.map((feature, index) => (
+              <Card key={index} className="group bg-card/70 backdrop-blur-md border-border/30 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-1.5 flex flex-col overflow-hidden">
+                <CardHeader className="items-center text-center p-6">
+                  {feature.icon}
+                  <CardTitle className="font-headline text-xl mt-2">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow flex flex-col items-center text-center p-6 pt-0">
+                  <p className="text-base text-muted-foreground mb-2 flex-grow">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary">
+              <Link href="/#success-stories">See Why Students Choose MedWithPurpose</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* HOW MEDWITHPURPOSE WORKS SECTION */}
       <section id="how-it-works" className="py-16 md:py-24 bg-muted/50 rounded-lg">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          How <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span> Works
-        </h2>
-        <div className="grid md:grid-cols-3 gap-8 container mx-auto px-4">
-          {howItWorksSteps.map((step, index) => (
-            <div key={index} className="text-center p-6 bg-card rounded-lg shadow-lg">
-              <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
-                {index + 1}
+        <div className="container mx-auto px-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
+            How <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span> Works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {howItWorksSteps.map((step, index) => (
+              <div key={index} className="text-center p-6 bg-card rounded-lg shadow-lg">
+                <div className="bg-primary text-primary-foreground rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-4 font-bold text-xl">
+                  {index + 1}
+                </div>
+                <h3 className="font-headline text-xl font-semibold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground mb-1">{step.description}</p>
               </div>
-              <h3 className="font-headline text-xl font-semibold mb-2">{step.title}</h3>
-              <p className="text-muted-foreground mb-1">{step.description}</p>
-            </div>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-            <Link href="/auth/signup">Run my free diagnostic mock</Link>
-          </Button>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <Link href="/auth/signup">Run my free diagnostic mock</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
       {/* SUCCESS STORIES SECTION */}
       <section id="success-stories" className="py-16 md:py-24">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          Success <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Stories</span>
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          {successStories.map((story, index) => (
-            <Card key={index} className="p-6 bg-card shadow-xl">
-              <CardContent className="pt-0">
-                <blockquote className="text-lg text-foreground italic border-l-4 border-primary pl-4">
-                  "{story.quote}"
-                </blockquote>
-                <p className="text-right mt-4 font-semibold text-muted-foreground">- {story.author}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary">
-            <Link href="/auth/signup">Browse More MedWithPurpose Wins</Link>
-          </Button>
+        <div className="container mx-auto px-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
+            Success <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Stories</span>
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            {successStories.map((story, index) => (
+              <Card key={index} className="p-6 bg-card shadow-xl">
+                <CardContent className="pt-0">
+                  <blockquote className="text-lg text-foreground italic border-l-4 border-primary pl-4">
+                    "{story.quote}"
+                  </blockquote>
+                  <p className="text-right mt-4 font-semibold text-muted-foreground">- {story.author}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary">
+              <Link href="/auth/signup">Browse More MedWithPurpose Wins</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -196,36 +202,38 @@ export default function HomePage() {
 
       {/* PRICING SNAPSHOT SECTION */}
       <section id="pricing" className="py-16 md:py-24">
-        <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          Pricing <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Snapshot</span>
-        </h2>
-        <Card className="max-w-3xl mx-auto shadow-xl">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="font-headline text-lg">Plan</TableHead>
-                  <TableHead className="font-headline text-lg">Price (AUD)</TableHead>
-                  <TableHead className="font-headline text-lg">Key perks</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {pricingTiers.map((tier, index) => (
-                  <TableRow key={index} className={index === 1 ? "bg-primary/10" : ""}>
-                    <TableCell className="font-medium">{tier.plan}</TableCell>
-                    <TableCell>{tier.price}</TableCell>
-                    <TableCell>{tier.perks}</TableCell>
+        <div className="container mx-auto px-4">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
+            Pricing <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Snapshot</span>
+          </h2>
+          <Card className="max-w-3xl mx-auto shadow-xl">
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="font-headline text-lg">Plan</TableHead>
+                    <TableHead className="font-headline text-lg">Price (AUD)</TableHead>
+                    <TableHead className="font-headline text-lg">Key perks</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-        <p className="text-center text-muted-foreground mt-6">14-day money-back promise—risk-free.</p>
-        <div className="text-center mt-8">
-          <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-            <Link href="/auth/signup">Try MedWithPurpose Pro For Free</Link>
-          </Button>
+                </TableHeader>
+                <TableBody>
+                  {pricingTiers.map((tier, index) => (
+                    <TableRow key={index} className={index === 1 ? "bg-primary/10" : ""}>
+                      <TableCell className="font-medium">{tier.plan}</TableCell>
+                      <TableCell>{tier.price}</TableCell>
+                      <TableCell>{tier.perks}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+          <p className="text-center text-muted-foreground mt-6">14-day money-back promise—risk-free.</p>
+          <div className="text-center mt-8">
+            <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <Link href="/auth/signup">Try MedWithPurpose Pro For Free</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
