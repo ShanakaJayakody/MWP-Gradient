@@ -31,12 +31,12 @@ export default function HomePage() {
     {
       icon: <Award className="h-10 w-10 text-accent mb-4" />,
       title: "Expert-Built Content",
-      description: "Created by 99ᵗʰ-percentile tutors and mapped to 2024 UCAT averages (Mean 2588; 15 240 sitters).",
+      description: "Created by 99ᵗʰ-percentile tutors and mapped to 2024 UCAT averages.",
     },
     {
       icon: <Leaf className="h-10 w-10 text-accent mb-4" />,
       title: "Purpose-Led Mission",
-      description: "Every licence funds free masterclasses for rural RA 2-7 schools—“preparation with purpose.”",
+      description: "Every licence funds free masterclasses for rural schools.",
     },
   ];
 
@@ -71,7 +71,7 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="-z-10 opacity-30"
+          className="-z-10 opacity-60"
           priority
           data-ai-hint="abstract background"
         />
