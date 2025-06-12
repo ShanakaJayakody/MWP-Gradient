@@ -72,6 +72,15 @@ export default function HomePage() {
     <div className="container mx-auto py-8 px-4">
       {/* HERO SECTION */}
       <section id="hero" className="text-center py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
+        <Image
+          src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/webhome_banner"
+          alt="Hero Background"
+          layout="fill"
+          objectFit="cover"
+          className="-z-20 opacity-50"
+          priority
+          data-ai-hint="abstract background"
+        />
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
@@ -259,3 +268,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
