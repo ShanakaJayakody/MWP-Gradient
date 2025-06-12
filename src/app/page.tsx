@@ -71,7 +71,7 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="opacity-100" 
+          className="opacity-60" 
           priority
           data-ai-hint="abstract background"
         />
