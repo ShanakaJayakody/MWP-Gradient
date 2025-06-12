@@ -108,7 +108,7 @@ export default function HomePage() {
       {/* WHY MEDWITHPURPOSE? SECTION */}
       <section id="why-us" className="py-16 md:py-24">
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-16">
-          Why <span className="text-primary">MedWithPurpose</span>?
+          Why <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>?
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {whyUsFeatures.map((feature, index) => (
@@ -134,7 +134,7 @@ export default function HomePage() {
       {/* HOW MEDWITHPURPOSE WORKS SECTION */}
       <section id="how-it-works" className="py-16 md:py-24 bg-muted/50 rounded-lg">
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          How <span className="text-primary">MedWithPurpose</span> Works
+          How <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span> Works
         </h2>
         <div className="grid md:grid-cols-3 gap-8 container mx-auto px-4">
           {howItWorksSteps.map((step, index) => (
@@ -158,7 +158,7 @@ export default function HomePage() {
       {/* SUCCESS STORIES SECTION */}
       <section id="success-stories" className="py-16 md:py-24">
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          Success <span className="text-primary">Stories</span>
+          Success <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Stories</span>
         </h2>
         <div className="grid md:grid-cols-2 gap-8">
           {successStories.map((story, index) => (
@@ -183,7 +183,7 @@ export default function HomePage() {
       <section id="impact" className="py-16 md:py-24 bg-muted/50 rounded-lg">
         <div className="container mx-auto px-4 text-center max-w-3xl">
           <h2 className="font-headline text-3xl md:text-4xl font-bold mb-6">
-            Our Story & <span className="text-primary">Values</span>
+            Our Story & <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Values</span>
           </h2>
           <p className="text-lg text-foreground leading-relaxed">
             At MedWithPurpose we believe access + evidence = impact. Our founders merged frontline medical experience with cutting-edge learning science to level the playing field for every aspiring doctor. Brand storytelling builds emotional resonance and lifts brand favourability—no competitor can copy your narrative.
@@ -194,7 +194,7 @@ export default function HomePage() {
       {/* PRICING SNAPSHOT SECTION */}
       <section id="pricing" className="py-16 md:py-24">
         <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-          Pricing <span className="text-primary">Snapshot</span>
+          Pricing <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Snapshot</span>
         </h2>
         <Card className="max-w-3xl mx-auto shadow-xl">
           <CardContent className="p-0">
@@ -230,7 +230,7 @@ export default function HomePage() {
       <section id="faq" className="py-16 md:py-24 bg-muted/50 rounded-lg">
         <div className="container mx-auto px-4 max-w-3xl">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-            Frequently Asked <span className="text-primary">Questions</span>
+            Frequently Asked <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Questions</span>
           </h2>
           <div className="space-y-8">
             {faqs.map((faq, index) => (
