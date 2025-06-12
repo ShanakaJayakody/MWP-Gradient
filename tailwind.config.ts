@@ -1,3 +1,4 @@
+
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -10,8 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'], 
+        body: ['PT Sans', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
         code: ['monospace', 'monospace'],
       },
       colors: {
@@ -26,7 +27,7 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: { // Used for gradients
-          DEFAULT: 'hsl(var(--primary))', 
+          DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: { // Used for gradients
