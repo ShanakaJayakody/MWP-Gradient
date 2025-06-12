@@ -1,102 +1,88 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'PT Sans', sans-serif; /* Default body font */
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Poppins', sans-serif; /* Headline font */
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
 @layer base {
   :root {
-    /* UPrep Theme - Based on https://studio--uprep-mik7g.us-central1.hosted.app/ */
-    --background: 220 13% 95%; /* Light Gray */
-    --foreground: 240 6% 10%; /* Dark Gray for text */
-
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 240 6% 10%;
-
+    /* Light Theme - UPrep Inspired */
+    --background: 0 0% 100%; /* white */
+    --foreground: 240 10% 3.9%; /* near black */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 6% 10%;
-
-    --primary: 217 89% 61%; /* Saturated Blue */
-    --primary-foreground: 0 0% 98%; /* Almost White */
-
-    --secondary: 220 86% 70%; /* Brighter, Lighter Blue for gradient midpoint */
-    --secondary-foreground: 240 6% 10%; 
-
-    --muted: 220 13% 91%; /* Cooler, blueish muted gray */
-    --muted-foreground: 220 10% 55%; /* Adjusted for new muted */
-
-    --accent: 36 100% 50%; /* Warm Orange */
-    --accent-foreground: 240 6% 10%;
-
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 256 82% 60%; /* Vibrant Purple */
+    --primary-foreground: 210 20% 98%; /* Light text on primary */
+    --secondary: 283 78% 64%; /* Vibrant Magenta/Purple for gradient */
+    --secondary-foreground: 210 20% 98%; /* Light text on this secondary */
+    --muted: 220 14.3% 95.9%; /* light gray */
+    --muted-foreground: 220 8.9% 46.1%; /* darker gray text on muted */
+    --accent: 300 80% 65%; /* Vibrant Pink/Magenta */
+    --accent-foreground: 0 0% 100%; /* white text on accent */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 220 13% 88%; /* Cooler, blueish border */
-    --input: 220 13% 92%; /* Cooler, blueish input background */
-    --ring: 217 89% 70%; /* Slightly lighter blue for ring */
-
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 256 82% 60%;
     --radius: 0.5rem;
 
-     /* Dark Theme - Based on https://studio--uprep-mik7g.us-central1.hosted.app/ */
-    --dark-background: 240 6% 10%; 
-    --dark-foreground: 220 13% 95%; 
+    /* Chart colors (absolute) */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
 
-    --dark-card: 240 5% 15%; 
-    --dark-card-foreground: 220 13% 95%;
-
-    --dark-popover: 240 5% 15%;
-    --dark-popover-foreground: 220 13% 95%;
-
-    --dark-primary: 217 89% 61%; 
-    --dark-primary-foreground: 0 0% 98%;
-
-    --dark-secondary: 220 70% 45%; /* Darker, Saturated Blue for dark theme gradient midpoint */
-    --dark-secondary-foreground: 220 13% 95%;
-
-    --dark-muted: 220 13% 20%; /* Cooler, blueish dark muted */
-    --dark-muted-foreground: 220 10% 65%;
-
-    --dark-accent: 36 100% 50%; 
-    --dark-accent-foreground: 240 6% 10%;
-
-    --dark-destructive: 0 72% 51%; /* Adjusted for dark theme */
-    --dark-destructive-foreground: 0 0% 98%;
-
-    --dark-border: 220 13% 25%; /* Cooler, blueish dark border */
-    --dark-input: 220 13% 22%; /* Cooler, blueish dark input */
-    --dark-ring: 217 89% 70%;
+    /* Sidebar colors - Light Theme */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-primary: 256 82% 60%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 0 0% 94%;
+    --sidebar-accent-foreground: 240 10% 3.9%;
+    --sidebar-border: 220 13% 88%;
+    --sidebar-ring: 256 82% 60%;
   }
 
   .dark {
-    --background: var(--dark-background);
-    --foreground: var(--dark-foreground);
-    --card: var(--dark-card);
-    --card-foreground: var(--dark-card-foreground);
-    --popover: var(--dark-popover);
-    --popover-foreground: var(--dark-popover-foreground);
-    --primary: var(--dark-primary);
-    --primary-foreground: var(--dark-primary-foreground);
-    --secondary: var(--dark-secondary);
-    --secondary-foreground: var(--dark-secondary-foreground);
-    --muted: var(--dark-muted);
-    --muted-foreground: var(--dark-muted-foreground);
-    --accent: var(--dark-accent);
-    --accent-foreground: var(--dark-accent-foreground);
-    --destructive: var(--dark-destructive);
-    --destructive-foreground: var(--dark-destructive-foreground);
-    --border: var(--dark-border);
-    --input: var(--dark-input);
-    --ring: var(--dark-ring);
+    /* Dark Theme - Based on UPrep Reference */
+    --background: 253 50% 8%;
+    --foreground: 220 14% 90%;
+    --card: 254 40% 13%;
+    --card-foreground: 220 14% 90%;
+    --popover: 254 40% 13%;
+    --popover-foreground: 220 14% 90%;
+    --primary: 256 82% 60%;
+    --primary-foreground: 220 14% 95%;
+    --secondary: 283 78% 64%;
+    --secondary-foreground: 220 14% 80%;
+    --muted: 253 30% 25%;
+    --muted-foreground: 220 10% 65%;
+    --accent: 300 80% 65%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 253 30% 30%;
+    --input: 253 30% 28%;
+    --ring: 263 64% 65%;
+
+    /* Chart colors are absolute, no need to repeat if they are the same */
+    /* --chart-1: 220 70% 50%; */
+    /* --chart-2: 160 60% 45%; */
+    /* --chart-3: 30 80% 55%; */
+    /* --chart-4: 280 65% 60%; */
+    /* --chart-5: 340 75% 55%; */
+
+    /* Sidebar colors - Dark Theme */
+    --sidebar-background: 253 50% 8%;
+    --sidebar-foreground: 220 14% 90%;
+    --sidebar-primary: 256 82% 60%;
+    --sidebar-primary-foreground: 220 14% 95%;
+    --sidebar-accent: 253 40% 20%;
+    --sidebar-accent-foreground: 220 14% 80%;
+    --sidebar-border: 253 30% 30%;
+    --sidebar-ring: 263 64% 65%;
   }
 }
 
@@ -106,5 +92,12 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+  }
+  html {
+    scroll-behavior: smooth;
   }
 }
