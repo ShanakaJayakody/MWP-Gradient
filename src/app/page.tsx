@@ -8,39 +8,39 @@ import Link from "next/link";
 
 export default function HomePage() {
   const whyUsFeatures = [
-    { 
-      icon: <Cpu className="h-10 w-10 text-accent mb-4" />, 
-      title: "AI-Personalised Pathways", 
+    {
+      icon: <Cpu className="h-10 w-10 text-accent mb-4" />,
+      title: "AI-Personalised Pathways",
       description: "AI-driven lessons help students learn 2× more in half the time compared with static modules.",
-      source: "sciencedirect.com" 
+      source: "sciencedirect.com"
     },
-    { 
-      icon: <Repeat className="h-10 w-10 text-accent mb-4" />, 
-      title: "Retrieval-Practice Engine", 
+    {
+      icon: <Repeat className="h-10 w-10 text-accent mb-4" />,
+      title: "Retrieval-Practice Engine",
       description: "Regular low-stakes testing boosts long-term retention better than re-reading— the classic testing effect.",
       source: "sciencedirect.com"
     },
-    { 
-      icon: <CalendarClock className="h-10 w-10 text-accent mb-4" />, 
-      title: "Spaced-Repetition Scheduler", 
+    {
+      icon: <CalendarClock className="h-10 w-10 text-accent mb-4" />,
+      title: "Spaced-Repetition Scheduler",
       description: "Algorithmic spacing is up to 89 % more effective than cramming.",
       source: "intellecs.ai"
     },
-    { 
-      icon: <SlidersHorizontal className="h-10 w-10 text-accent mb-4" />, 
-      title: "Adaptive Testing", 
+    {
+      icon: <SlidersHorizontal className="h-10 w-10 text-accent mb-4" />,
+      title: "Adaptive Testing",
       description: "Difficulty adjusts in real time, lowering test anxiety and drop-out by double-digit margins.",
       source: "files.eric.ed.gov"
     },
-    { 
-      icon: <Award className="h-10 w-10 text-accent mb-4" />, 
-      title: "Expert-Built Content", 
+    {
+      icon: <Award className="h-10 w-10 text-accent mb-4" />,
+      title: "Expert-Built Content",
       description: "Created by 99ᵗʰ-percentile tutors and mapped to 2024 UCAT averages (Mean 2588; 15 240 sitters).",
       source: "ucat.edu.au"
     },
-    { 
-      icon: <Leaf className="h-10 w-10 text-accent mb-4" />, 
-      title: "Purpose-Led Mission", 
+    {
+      icon: <Leaf className="h-10 w-10 text-accent mb-4" />,
+      title: "Purpose-Led Mission",
       description: "Every licence funds free masterclasses for rural RA 2-7 schools—“preparation with purpose.”",
       source: "(Add your impact stats here.)"
     },
@@ -80,28 +80,24 @@ export default function HomePage() {
           MedWithPurpose: Smarter UCAT prep, crafted for future doctors.
         </h1>
         <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-          Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful. 
+          Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
           <span className="block text-xs mt-1">Source: marketermilk.com</span>
         </p>
         <div className="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center">
-          <Button 
-            size="lg" 
-            asChild 
+          <Button
+            size="lg"
+            asChild
             className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
           >
-            <Link href="/auth/signup"> {/* Placeholder */}
-              Start My Free Trial on MedWithPurpose
-            </Link>
+            <Link href="/auth/signup">Start My Free Trial on MedWithPurpose</Link>
           </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            asChild 
+          <Button
+            size="lg"
+            variant="outline"
+            asChild
             className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3 w-full sm:w-auto"
           >
-            <Link href="/#why-us"> {/* Placeholder or link to courses */}
-              Explore MedWithPurpose Courses
-            </Link>
+            <Link href="/#why-us">Explore MedWithPurpose Courses</Link>
           </Button>
         </div>
       </section>
@@ -151,7 +147,7 @@ export default function HomePage() {
         </div>
         <div className="text-center mt-12">
           <Button size="lg" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="/auth/signup">Run My Free Diagnostic</Link> {/* Placeholder */}
+            <Link href="/auth/signup">Run My Free Diagnostic</Link>
           </Button>
         </div>
       </section>
@@ -175,7 +171,7 @@ export default function HomePage() {
         </div>
         <div className="text-center mt-12">
           <Button size="lg" variant="outline" asChild className="border-primary/50 hover:bg-primary/10 hover:text-primary">
-            <Link href="/auth/signup">Browse More MedWithPurpose Wins</Link> {/* Placeholder */}
+            <Link href="/auth/signup">Browse More MedWithPurpose Wins</Link>
           </Button>
         </div>
       </section>
@@ -222,7 +218,7 @@ export default function HomePage() {
         <p className="text-center text-muted-foreground mt-6">14-day money-back promise—risk-free.</p>
         <div className="text-center mt-8">
           <Button size="lg" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="/auth/signup">Unlock MedWithPurpose Pro</Link> {/* Placeholder */}
+            <Link href="/auth/signup">Unlock MedWithPurpose Pro</Link>
           </Button>
         </div>
       </section>
@@ -247,8 +243,11 @@ export default function HomePage() {
               “Join 5000+ Australian candidates who trusted MedWithPurpose for their UCAT journey.”
             </p>
             <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-              <Link href="/auth/signup"> {/* Placeholder */}
-                Start Free on MedWithPurpose <ArrowRight className="ml-2 h-5 w-5" />
+              <Link href="/auth/signup">
+                <span className="inline-flex items-center">
+                  Start Free on MedWithPurpose
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </span>
               </Link>
             </Button>
           </div>
