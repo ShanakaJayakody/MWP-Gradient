@@ -83,12 +83,12 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="relative z-10 text-left max-w-2xl">
             <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
-              Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
-              <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
+              <span className="text-white dark:text-foreground">Welcome To</span> <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
+              <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-white dark:text-muted-foreground">
                 Smarter UCAT prep, for future doctors.
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground mb-10">
+            <p className="text-lg md:text-xl text-white dark:text-muted-foreground mb-10">
               Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
             </p>
             <div className="mt-10 flex flex-col items-start space-y-4 sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4">
