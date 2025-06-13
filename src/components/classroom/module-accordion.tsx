@@ -62,11 +62,11 @@ export function ModuleAccordion({
     <AccordionItem 
       value={module.id} 
       className={cn(
-        "border-b-0 bg-card rounded-lg shadow-sm mb-2 relative", // Added 'relative'
-        isDragging && "opacity-50 shadow-xl z-10" // z-10 ensures it's above siblings if positioned
+        "border-b-0 bg-card rounded-lg shadow-sm mb-2 relative", 
+        isDragging && "opacity-50 shadow-xl" // Removed z-10, style prop from dnd-kit will handle zIndex
       )} 
       ref={setNodeRef} 
-      style={style} // This style will come from useSortable, including transform and zIndex
+      style={style} 
     >
       <div className="flex items-center px-2 hover:bg-muted/50 rounded-t-lg group">
         {/* Drag Handle */}
