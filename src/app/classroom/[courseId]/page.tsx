@@ -93,7 +93,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  const [currentCourse, setCurrentCourse] = useState(() => getCourseById(courseId));
+  const [currentCourse, setCurrentCourse] = useState<ReturnType<typeof getCourseById>>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [lessonCompletions, setLessonCompletions] = React.useState<Record<string, boolean>>({});
   const [isDeleteCourseDialogOpen, setIsDeleteCourseDialogOpen] = useState(false);
@@ -117,26 +117,25 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       const lastViewedLessonId = localStorage.getItem(localStorageKey);
 
       if (lastViewedLessonId) {
-        // Check if lesson still exists
         const lessonExists = fetchedCourse.modules.some(m => m.lessons.some(l => l.id === lastViewedLessonId));
         if (lessonExists) {
           router.replace(`/classroom/${courseId}/${lastViewedLessonId}`);
-          return; // Important: return to prevent further execution if redirecting
+          return; 
         } else {
-          localStorage.removeItem(localStorageKey); // Clean up invalid ID
+          localStorage.removeItem(localStorageKey); 
         }
       }
       
-      // If no valid lastViewedLessonId or it was cleaned up, try first lesson
       if (fetchedCourse.modules?.[0]?.lessons?.[0]?.id) {
         const firstLessonId = fetchedCourse.modules[0].lessons[0].id;
         router.replace(`/classroom/${courseId}/${firstLessonId}`);
         return; 
       }
-      // If no lessons, just stay on this page
+      // If no lessons, this page will render its content.
       setIsLoading(false);
 
-    } else if (fetchedCourse === undefined && courseId) { // Course explicitly not found
+    } else if (fetchedCourse === undefined && courseId) { 
+      // Course not found, this page should not render content either (will hit notFound() below).
       setIsLoading(false); 
     }
   }, [courseId, router]);
@@ -153,12 +152,9 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         });
       });
       setLessonCompletions(initialCompletions);
-      if (isLoading) setIsLoading(false); // Set loading to false if it was true and course data is now processed
-    } else if (!currentCourse && !isLoading) { // Course is null and we are not already loading
-      // This implies course was not found initially or after an operation.
-      // notFound() will be called below if currentCourse is still null after isLoading check.
+      // setIsLoading(false) was here, removed to let the first useEffect control it based on redirection.
     }
-  }, [currentCourse, isLoading]);
+  }, [currentCourse]);
 
 
   const handleDeleteCourseAction = () => {
@@ -248,17 +244,14 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       
       const reorderedModules = arrayMove(currentCourse.modules, oldIndex, newIndex);
       
-      // Update state optimistically
       setCurrentCourse(prevCourse => prevCourse ? { ...prevCourse, modules: reorderedModules } : null);
-      
-      // "Persist" change to mock data
       updateCourseModules(courseId, reorderedModules); 
       
       toast({ title: "Module Reordered", description: "The module order has been updated." });
     }
   }
   
-  if (isLoading && !(currentCourse && (localStorage.getItem(`lastViewedLesson_${courseId}`) || currentCourse.modules?.[0]?.lessons?.[0]?.id))) {
+  if (isLoading) { // Simplified loading condition
      return (
         <div className="container mx-auto py-8 px-4 text-center">
             <p className="text-lg text-muted-foreground">Loading course content...</p>
@@ -410,3 +403,4 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
 export default function CoursePage({ params }: CoursePageProps) {
   return <CourseClientPage courseId={params.courseId} />;
 }
+
