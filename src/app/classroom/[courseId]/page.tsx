@@ -132,11 +132,12 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         return; 
       }
       // If no lessons, this page will render its content.
-      setIsLoading(false);
+      // This setIsLoading(false) allows the page to render if no redirect occurs.
+      setIsLoading(false); 
 
     } else if (fetchedCourse === undefined && courseId) { 
-      // Course not found, this page should not render content either (will hit notFound() below).
-      setIsLoading(false); 
+      // Course not found by ID
+      setIsLoading(false); // Stop loading to allow notFound() to be triggered below
     }
   }, [courseId, router]);
 
@@ -152,7 +153,6 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         });
       });
       setLessonCompletions(initialCompletions);
-      // setIsLoading(false) was here, removed to let the first useEffect control it based on redirection.
     }
   }, [currentCourse]);
 
@@ -251,7 +251,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
     }
   }
   
-  if (isLoading) { // Simplified loading condition
+  if (isLoading) { 
      return (
         <div className="container mx-auto py-8 px-4 text-center">
             <p className="text-lg text-muted-foreground">Loading course content...</p>

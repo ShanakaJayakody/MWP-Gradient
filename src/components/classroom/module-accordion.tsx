@@ -63,7 +63,7 @@ export function ModuleAccordion({
       value={module.id} 
       className={cn(
         "border-b-0 bg-card rounded-lg shadow-sm mb-2 relative", 
-        isDragging && "opacity-50 shadow-xl" // Removed z-10, style prop from dnd-kit will handle zIndex
+        isDragging && "opacity-50 shadow-xl" 
       )} 
       ref={setNodeRef} 
       style={style} 
