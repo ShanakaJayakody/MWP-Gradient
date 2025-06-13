@@ -70,10 +70,15 @@ function SortableModuleItem({ module, ...props }: { module: Module } & Omit<Reac
   } = useSortable({ id: module.id });
 
   const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition || undefined, // Use dnd-kit's transition, or allow CSS to handle if null
     zIndex: isDragging ? 100 : 'auto', // Ensure dragged item is above others
   };
+
+  if (transform) {
+    // Apply transform using translate3d for potential hardware acceleration and to include scale if provided by strategy
+    style.transform = `translate3d(${transform.x}px, ${transform.y}px, 0) scaleX(${transform.scaleX || 1}) scaleY(${transform.scaleY || 1})`;
+  }
+
 
   return (
     <ModuleAccordion
@@ -111,6 +116,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
   useEffect(() => {
     const fetchedCourse = getCourseById(courseId);
     setCurrentCourse(fetchedCourse);
+    setIsLoading(false); // Moved here to ensure it's set after attempting to fetch
 
     if (fetchedCourse) {
       const localStorageKey = `lastViewedLesson_${courseId}`;
@@ -131,14 +137,9 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         router.replace(`/classroom/${courseId}/${firstLessonId}`);
         return; 
       }
-      // If no lessons, this page will render its content.
-      // This setIsLoading(false) allows the page to render if no redirect occurs.
-      setIsLoading(false); 
-
-    } else if (fetchedCourse === undefined && courseId) { 
-      // Course not found by ID
-      setIsLoading(false); // Stop loading to allow notFound() to be triggered below
     }
+    // If no redirect occurs, the page content (course overview) will render.
+    // setIsLoading(false) was moved up to ensure it's set even if fetchedCourse is null initially.
   }, [courseId, router]);
 
 
