@@ -34,14 +34,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { AddModuleDialog } from "@/components/classroom/add-module-dialog";
 
-// LessonPageParams is no longer needed for this component's props
-// interface LessonPageParams {
-//   params: {
-//     courseId: string;
-//     lessonId: string;
-//   };
-// }
-
 export default function LessonPage() {
   const routeParams = useParams();
   const courseId = routeParams.courseId as string;
@@ -61,11 +53,7 @@ export default function LessonPage() {
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
 
   useEffect(() => {
-    // Ensure courseId and lessonId are available before proceeding
     if (!courseId || !lessonId) {
-      // This might happen if useParams hasn't resolved yet or if the route is malformed.
-      // Depending on desired behavior, you could show a loading state or call notFound().
-      // For now, we'll let the subsequent checks handle it.
       return;
     }
 
@@ -109,11 +97,9 @@ export default function LessonPage() {
       }));
 
     } else {
-      // If a course was found but this specific lesson wasn't, it's also a "not found" scenario for the lesson page.
       if (course) { 
           notFound();
       }
-      // If course wasn't found, the earlier notFound() would have been called.
     }
   }, [courseId, lessonId]);
 
