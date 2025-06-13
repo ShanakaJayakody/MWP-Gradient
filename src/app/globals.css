@@ -46,43 +46,38 @@
   }
 
   .dark {
-    /* Dark Theme - Based on UPrep Reference */
+    /* Dark Theme - Gradient Swapped */
     --background: 253 50% 8%;
     --foreground: 220 14% 90%;
     --card: 254 40% 13%;
     --card-foreground: 220 14% 90%;
     --popover: 254 40% 13%;
     --popover-foreground: 220 14% 90%;
-    --primary: 260 70% 40%; /* Darker Purple */
-    --primary-foreground: 220 14% 95%;
+    --primary: 300 80% 45%; /* Vibrant Pink/Magenta */
+    --primary-foreground: 220 14% 95%; /* Light text on pink */
     --secondary: 280 75% 40%; /* Violet - mid-tone */
-    --secondary-foreground: 220 14% 95%; /* Adjusted for better contrast with darker secondary */
+    --secondary-foreground: 220 14% 95%; /* Light text on violet */
     --muted: 253 30% 25%;
     --muted-foreground: 220 10% 65%;
-    --accent: 300 80% 45%; /* Vibrant Pink/Magenta */
-    --accent-foreground: 0 0% 100%;
+    --accent: 260 70% 40%; /* Darker Purple */
+    --accent-foreground: 0 0% 100%; /* White text on dark purple */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 253 30% 30%;
     --input: 253 30% 28%;
-    --ring: 260 70% 45%; /* Slightly lighter ring for dark mode */
+    --ring: 300 80% 50%; /* Ring based on new primary (Pink/Magenta), slightly lighter */
 
     /* Chart colors are absolute, no need to repeat if they are the same */
-    /* --chart-1: 220 70% 50%; */
-    /* --chart-2: 160 60% 45%; */
-    /* --chart-3: 30 80% 55%; */
-    /* --chart-4: 280 65% 60%; */
-    /* --chart-5: 340 75% 55%; */
 
     /* Sidebar colors - Dark Theme */
     --sidebar-background: 253 50% 8%;
     --sidebar-foreground: 220 14% 90%;
-    --sidebar-primary: 260 70% 40%; 
+    --sidebar-primary: 300 80% 45%; /* New primary */
     --sidebar-primary-foreground: 220 14% 95%;
     --sidebar-accent: 253 40% 20%;
     --sidebar-accent-foreground: 220 14% 80%;
     --sidebar-border: 253 30% 30%;
-    --sidebar-ring: 260 70% 45%; 
+    --sidebar-ring: 300 80% 50%; /* New ring for sidebar, based on new primary */
   }
 }
 
