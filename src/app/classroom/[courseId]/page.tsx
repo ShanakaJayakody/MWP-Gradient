@@ -9,7 +9,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2 } from "lucide-react";
+import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus } from "lucide-react";
 import type { Lesson } from "@/types/classroom";
 import React, { useEffect, useState } from 'react';
 import {
@@ -147,13 +147,19 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
                 <DropdownMenuItem asChild>
                   <Link href={`/admin/edit-course/${course.id}`}>
                     <Edit className="mr-2 h-4 w-4" />
-                    Edit Course & Modules
+                    Edit course
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={`/admin/edit-course/${course.id}`}>
+                    <FolderPlus className="mr-2 h-4 w-4" />
+                    Add Module
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href={`/admin/edit-lesson/new-lesson?courseId=${course.id}`}>
                     <FilePlus2 className="mr-2 h-4 w-4" />
-                    Add New Lesson
+                    Add Lesson
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -180,7 +186,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
             ))}
           </Accordion>
         ) : (
-          <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Edit Course & Modules" in the options menu above.</p>
+          <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Edit course" or "Add Module" in the options menu above.</p>
         )}
       </div>
 

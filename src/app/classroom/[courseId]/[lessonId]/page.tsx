@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { getLessonById, getCourseById, deleteCourse } from "../../data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, CheckSquare, Download, ListChecks, Type, Video, BookOpen, MoreVertical, Edit, Trash2, FilePlus2 } from "lucide-react";
+import { ArrowLeft, CheckSquare, Download, ListChecks, Type, Video, BookOpen, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LessonCompletionCheckbox } from "@/components/classroom/lesson-completion-checkbox";
@@ -186,13 +186,19 @@ export default function LessonPage({ params }: LessonPageParams) {
                   <DropdownMenuItem asChild>
                     <Link href={`/admin/edit-course/${course.id}`}>
                       <Edit className="mr-2 h-4 w-4" />
-                      Edit Course & Modules
+                      Edit course
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/admin/edit-course/${course.id}`}>
+                      <FolderPlus className="mr-2 h-4 w-4" />
+                      Add Module
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href={`/admin/edit-lesson/new-lesson?courseId=${course.id}`}>
                      <FilePlus2 className="mr-2 h-4 w-4" />
-                      Add New Lesson
+                      Add Lesson
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
