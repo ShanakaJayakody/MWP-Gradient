@@ -69,9 +69,10 @@ function SortableModuleItem({ module, ...props }: { module: Module } & Omit<Reac
     isDragging,
   } = useSortable({ id: module.id });
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
+    zIndex: isDragging ? 100 : 'auto', // Ensure dragged item is above others
   };
 
   return (
@@ -325,39 +326,40 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
               </DropdownMenuContent>
             </DropdownMenu>
           </CardHeader>
+          <CardContent className="p-6">
+            <h2 className="font-headline text-2xl font-semibold mb-6">Course Modules</h2>
+            {currentCourse.modules.length > 0 ? (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleModuleDragEnd}
+              >
+                <SortableContext
+                  items={currentCourse.modules.map(m => m.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <Accordion type="multiple" className="w-full space-y-0" defaultValue={currentCourse.modules.map(m => m.id)}>
+                    {currentCourse.modules.map((module) => (
+                      <SortableModuleItem
+                        key={module.id}
+                        module={module} 
+                        courseId={currentCourse.id} 
+                        lessonCompletions={lessonCompletions}
+                        onDeleteModule={(moduleId) => {
+                          setModuleToDelete(moduleId);
+                          setIsDeleteModuleDialogOpen(true);
+                        }}
+                        onDuplicateModule={handleDuplicateModuleAction}
+                      />
+                    ))}
+                  </Accordion>
+                </SortableContext>
+              </DndContext>
+            ) : (
+              <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Add Module" in the options menu above.</p>
+            )}
+          </CardContent>
         </Card>
-        
-        <h2 className="font-headline text-2xl font-semibold mb-6">Course Modules</h2>
-        {currentCourse.modules.length > 0 ? (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleModuleDragEnd}
-          >
-            <SortableContext
-              items={currentCourse.modules.map(m => m.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              <Accordion type="multiple" className="w-full space-y-0" defaultValue={currentCourse.modules.map(m => m.id)}>
-                {currentCourse.modules.map((module) => (
-                  <SortableModuleItem
-                    key={module.id}
-                    module={module} 
-                    courseId={currentCourse.id} 
-                    lessonCompletions={lessonCompletions}
-                    onDeleteModule={(moduleId) => {
-                      setModuleToDelete(moduleId);
-                      setIsDeleteModuleDialogOpen(true);
-                    }}
-                    onDuplicateModule={handleDuplicateModuleAction}
-                  />
-                ))}
-              </Accordion>
-            </SortableContext>
-          </DndContext>
-        ) : (
-          <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Add Module" in the options menu above.</p>
-        )}
       </div>
 
       <AlertDialog open={isDeleteCourseDialogOpen} onOpenChange={setIsDeleteCourseDialogOpen}>
