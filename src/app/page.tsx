@@ -71,7 +71,7 @@ export default function HomePage() {
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
-          className="opacity-90 dark:opacity-80"
+          className="dark:opacity-80"
           priority
           data-ai-hint="abstract background students"
         />
@@ -88,7 +88,7 @@ export default function HomePage() {
                 Smarter UCAT prep, for future doctors.
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-muted-foreground dark:text-white mb-10">
+            <p className="text-lg md:text-xl text-white dark:text-white mb-10">
               Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
             </p>
             <div className="mt-10 flex flex-col items-start space-y-4 sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4">
