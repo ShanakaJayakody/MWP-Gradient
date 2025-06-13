@@ -3,14 +3,14 @@
 
 import { notFound, useRouter } from "next/navigation";
 import Image from "next/image";
-import { deleteCourse, getCourseById, updateCourseModules } from "../data";
+import { deleteCourse, getCourseById, updateCourseModules, deleteModule, duplicateModule } from "../data";
 import { ModuleAccordion } from "@/components/classroom/module-accordion";
 import { Accordion } from "@/components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus } from "lucide-react";
-import type { Lesson, Module } from "@/types/classroom";
+import type { Module } from "@/types/classroom";
 import React, { useEffect, useState } from 'react';
 import {
   DropdownMenu,
@@ -30,7 +30,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { AddModuleDialog } from "@/components/classroom/add-module-dialog"; // New import
+import { AddModuleDialog } from "@/components/classroom/add-module-dialog";
 
 interface CoursePageProps {
   params: { courseId: string };
@@ -44,15 +44,15 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  // State for course data to allow re-rendering when modules are added
   const [currentCourse, setCurrentCourse] = useState(() => getCourseById(courseId));
   const [isLoading, setIsLoading] = useState(true);
   const [lessonCompletions, setLessonCompletions] = React.useState<Record<string, boolean>>({});
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isDeleteCourseDialogOpen, setIsDeleteCourseDialogOpen] = useState(false);
+  const [isDeleteModuleDialogOpen, setIsDeleteModuleDialogOpen] = useState(false);
+  const [moduleToDelete, setModuleToDelete] = useState<string | null>(null);
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch or update course whenever courseId changes or component mounts
     const fetchedCourse = getCourseById(courseId);
     setCurrentCourse(fetchedCourse);
 
@@ -69,10 +69,9 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         setIsLoading(false);
       }
     } else if (fetchedCourse === undefined && courseId) {
-      // If course not found after initial load attempt
       setIsLoading(false); 
     }
-  }, [courseId, router]); // Removed currentCourse from dependencies to avoid loop
+  }, [courseId, router]);
 
   useEffect(() => {
     if (currentCourse) {
@@ -85,15 +84,14 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         });
       });
       setLessonCompletions(initialCompletions);
-      setIsLoading(false); // Set loading to false once course and completions are processed
+      setIsLoading(false);
     } else if (!currentCourse && !isLoading) {
-        // If after initial useEffect, currentCourse is still null and we are not loading, it means course not found
-        // Handled by notFound() below
+      // Handled by notFound() below
     }
-  }, [currentCourse, isLoading]); // Added isLoading to dependencies
+  }, [currentCourse, isLoading]);
 
 
-  const handleDeleteCourse = () => {
+  const handleDeleteCourseAction = () => {
     if (currentCourse) {
       const success = deleteCourse(currentCourse.id);
       if (success) {
@@ -109,7 +107,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
           description: `Could not delete "${currentCourse.title}". Please try again.`,
         });
       }
-      setIsDeleteDialogOpen(false);
+      setIsDeleteCourseDialogOpen(false);
     }
   };
 
@@ -118,12 +116,12 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       const newModule: Module = {
         id: `module-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         title: moduleName,
-        description: isPublished ? "Published module" : "Draft module", // Placeholder description
+        description: isPublished ? "Published module" : "Draft module",
         lessons: [],
       };
       const updatedModules = [...currentCourse.modules, newModule];
       updateCourseModules(currentCourse.id, updatedModules);
-      setCurrentCourse(getCourseById(courseId)); // Re-fetch to update local state and trigger re-render
+      setCurrentCourse(getCourseById(courseId));
       toast({
         title: "Module Added",
         description: `"${moduleName}" has been added to ${currentCourse.title}.`,
@@ -132,7 +130,46 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
     setIsAddModuleDialogOpen(false);
   };
 
+  const handleDeleteModuleAction = () => {
+    if (currentCourse && moduleToDelete) {
+      const success = deleteModule(currentCourse.id, moduleToDelete);
+      if (success) {
+        toast({
+          title: "Module Deleted",
+          description: `Module has been successfully deleted from "${currentCourse.title}".`,
+        });
+        setCurrentCourse(getCourseById(courseId)); // Refresh course data
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error Deleting Module",
+          description: "Could not delete the module. Please try again.",
+        });
+      }
+    }
+    setIsDeleteModuleDialogOpen(false);
+    setModuleToDelete(null);
+  };
 
+  const handleDuplicateModuleAction = (moduleId: string) => {
+    if (currentCourse) {
+      const duplicated = duplicateModule(currentCourse.id, moduleId);
+      if (duplicated) {
+        toast({
+          title: "Module Duplicated",
+          description: `Module "${duplicated.title}" has been successfully created.`,
+        });
+        setCurrentCourse(getCourseById(courseId)); // Refresh course data
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error Duplicating Module",
+          description: "Could not duplicate the module. Please try again.",
+        });
+      }
+    }
+  };
+  
   if (isLoading && !(currentCourse && (localStorage.getItem(`lastViewedLesson_${courseId}`) || currentCourse.modules?.[0]?.lessons?.[0]?.id))) {
      return (
         <div className="container mx-auto py-8 px-4 text-center">
@@ -142,7 +179,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
   }
   
   if (!currentCourse) {
-    notFound(); // Call notFound if currentCourse is null after loading attempts
+    notFound();
   }
 
   return (
@@ -194,7 +231,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                <DropdownMenuItem onClick={() => setIsDeleteCourseDialogOpen(true)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete Course
                 </DropdownMenuItem>
@@ -212,6 +249,11 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
                       module={module} 
                       courseId={currentCourse.id} 
                       lessonCompletions={lessonCompletions}
+                      onDeleteModule={(moduleId) => {
+                        setModuleToDelete(moduleId);
+                        setIsDeleteModuleDialogOpen(true);
+                      }}
+                      onDuplicateModule={handleDuplicateModuleAction}
                   />
               </Card>
             ))}
@@ -221,7 +263,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         )}
       </div>
 
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog open={isDeleteCourseDialogOpen} onOpenChange={setIsDeleteCourseDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure you want to delete this course?</AlertDialogTitle>
@@ -232,14 +274,31 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteCourse} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+            <AlertDialogAction onClick={handleDeleteCourseAction} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
               Delete Course
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       
-      {/* Add Module Dialog instance */}
+      <AlertDialog open={isDeleteModuleDialogOpen} onOpenChange={setIsDeleteModuleDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this module?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the module
+              "{currentCourse.modules.find(m => m.id === moduleToDelete)?.title}" and all its lessons.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setModuleToDelete(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteModuleAction} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+              Delete Module
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <AddModuleDialog
         open={isAddModuleDialogOpen}
         onOpenChange={setIsAddModuleDialogOpen}

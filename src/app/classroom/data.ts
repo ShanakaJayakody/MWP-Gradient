@@ -1,7 +1,7 @@
 
-import type { Course, Module } from "@/types/classroom";
+import type { Course, Module, Lesson } from "@/types/classroom";
 
-export const mockCourses: Course[] = [
+export let mockCourses: Course[] = [
   {
     id: "verbal-reasoning-foundations",
     title: "Verbal Reasoning Foundations",
@@ -171,7 +171,7 @@ export const getLessonById = (courseId: string, lessonId: string) => {
   return undefined;
 };
 
-// Conceptual function to update course modules (used by admin edit course page)
+// Function to update course modules (used by admin edit course page & add module dialog)
 export const updateCourseModules = (courseId: string, newModules: Course['modules']) => {
   const courseIndex = mockCourses.findIndex(c => c.id === courseId);
   if (courseIndex > -1) {
@@ -189,13 +189,68 @@ export const deleteCourse = (courseId: string): boolean => {
   if (courseIndex > -1) {
     mockCourses.splice(courseIndex, 1);
     console.log("Mock course deleted:", courseId);
-    // Clean up localStorage for this course's last viewed lesson
     localStorage.removeItem(`lastViewedLesson_${courseId}`);
-    // If lesson completions were stored per-course, you'd clear that too.
-    // For now, lessonCompletions is global in localStorage, so we won't touch it here
-    // unless we change its structure.
     return true;
   }
   console.warn("Failed to delete mock course, course not found:", courseId);
   return false;
+};
+
+// Helper function to delete a module from a course
+export const deleteModule = (courseId: string, moduleId: string): boolean => {
+  const course = getCourseById(courseId);
+  if (course) {
+    const initialModuleCount = course.modules.length;
+    course.modules = course.modules.filter(module => module.id !== moduleId);
+    if (course.modules.length < initialModuleCount) {
+      console.log(`Module ${moduleId} deleted from course ${courseId}`);
+      // Update the main mockCourses array by finding and replacing the course
+      const courseIndex = mockCourses.findIndex(c => c.id === courseId);
+      if (courseIndex !== -1) {
+        mockCourses[courseIndex] = course;
+      }
+      return true;
+    }
+  }
+  console.warn(`Failed to delete module ${moduleId} from course ${courseId}`);
+  return false;
+};
+
+// Helper function to duplicate a module in a course
+export const duplicateModule = (courseId: string, moduleId: string): Module | undefined => {
+  const course = getCourseById(courseId);
+  if (course) {
+    const originalModule = course.modules.find(module => module.id === moduleId);
+    if (originalModule) {
+      const newModuleId = `module-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+      const duplicatedLessons: Lesson[] = originalModule.lessons.map(lesson => ({
+        ...lesson,
+        id: `lesson-${Date.now()}-${Math.random().toString(36).substring(2, 9)}-${lesson.id.slice(-5)}`, // Ensure unique lesson IDs
+      }));
+      
+      const newModule: Module = {
+        ...originalModule,
+        id: newModuleId,
+        title: `${originalModule.title} (Copy)`,
+        lessons: duplicatedLessons,
+      };
+      
+      course.modules.push(newModule);
+      // Update the main mockCourses array
+      const courseIndex = mockCourses.findIndex(c => c.id === courseId);
+      if (courseIndex !== -1) {
+        mockCourses[courseIndex] = course;
+      }
+      console.log(`Module ${moduleId} duplicated in course ${courseId} as ${newModuleId}`);
+      return newModule;
+    }
+  }
+  console.warn(`Failed to duplicate module ${moduleId} in course ${courseId}`);
+  return undefined;
+};
+
+// Helper function to re-export mockCourses if direct mutation is an issue for reactivity elsewhere.
+// This might not be necessary if component state updates correctly.
+export const getCourses = (): Course[] => {
+    return mockCourses;
 };
