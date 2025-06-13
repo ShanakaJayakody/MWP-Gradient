@@ -65,7 +65,7 @@ export default function HomePage() {
   return (
     <div>
       {/* HERO SECTION */}
-      <section id="hero" className="py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
+      <section id="hero" className="py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-start">
         <Image
           src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/web_home_banner?updatedAt=1749779414396"
           alt="Hero Background"
@@ -80,32 +80,34 @@ export default function HomePage() {
           <div className="absolute bottom-0 left-1/3 -translate-x-1/2 w-[100%] h-[100%] bg-gradient-radial from-accent/10 via-transparent to-transparent blur-2xl animate-pulse opacity-50"></div>
         </div>
         
-        <div className="relative z-10 text-center px-4">
-          <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
-            Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
-            <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
-              Smarter UCAT prep, for future doctors.
-            </span>
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10">
-            Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
-          </p>
-          <div className="mt-10 flex flex-col items-center space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            <Button
-              size="lg"
-              asChild
-              className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
-            >
-              <Link href="/auth/signup">Start my free trial</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              asChild
-              className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3 w-full sm:w-auto"
-            >
-              <Link href="/#why-us">Explore MedWithPurpose Courses</Link>
-            </Button>
+        <div className="container mx-auto px-4">
+          <div className="relative z-10 text-left max-w-2xl">
+            <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
+              Welcome To <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
+              <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-muted-foreground">
+                Smarter UCAT prep, for future doctors.
+              </span>
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground mb-10">
+              Personalised AI, 3000+ exam-authentic drills and real-time analytics—everything you need to stride into test day certain, not hopeful.
+            </p>
+            <div className="mt-10 flex flex-col items-start space-y-4 sm:flex-row sm:justify-start sm:space-y-0 sm:space-x-4">
+              <Button
+                size="lg"
+                asChild
+                className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg hover:shadow-primary/40 transition-all duration-300 transform hover:scale-105 px-8 py-3 w-full sm:w-auto"
+              >
+                <Link href="/auth/signup">Start my free trial</Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="border-primary/50 hover:bg-primary/10 hover:text-primary transition-all duration-300 transform hover:scale-105 text-foreground hover:border-primary px-8 py-3 w-full sm:w-auto"
+              >
+                <Link href="/#why-us">Explore MedWithPurpose Courses</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -190,13 +192,15 @@ export default function HomePage() {
 
       {/* OUR STORY & VALUES SECTION / IMPACT */}
       <section id="impact" className="py-16 md:py-24 bg-muted/50 rounded-lg">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold mb-6">
-            Our Story & <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Values</span>
-          </h2>
-          <p className="text-lg text-foreground leading-relaxed">
-            At MedWithPurpose we believe access + evidence = impact. Our founders merged frontline medical experience with cutting-edge learning science to level the playing field for every aspiring doctor. Brand storytelling builds emotional resonance and lifts brand favourability—no competitor can copy your narrative.
-          </p>
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold mb-6">
+              Our Story & <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Values</span>
+            </h2>
+            <p className="text-lg text-foreground leading-relaxed">
+              At MedWithPurpose we believe access + evidence = impact. Our founders merged frontline medical experience with cutting-edge learning science to level the playing field for every aspiring doctor. Brand storytelling builds emotional resonance and lifts brand favourability—no competitor can copy your narrative.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -239,30 +243,32 @@ export default function HomePage() {
 
       {/* FAQ SECTION */}
       <section id="faq" className="py-16 md:py-24 bg-muted/50 rounded-lg">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
-            Frequently Asked <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Questions</span>
-          </h2>
-          <div className="space-y-8">
-            {faqs.map((faq, index) => (
-              <div key={index}>
-                <h3 className="font-headline text-xl font-semibold text-foreground mb-2">"{faq.question}"</h3>
-                <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-16">
-            <p className="text-xl text-foreground font-semibold mb-6">
-              “Join 5000+ Australian candidates who trusted MedWithPurpose for their UCAT journey.”
-            </p>
-            <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-              <Link href="/auth/signup">
-                <span className="inline-flex items-center">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </span>
-              </Link>
-            </Button>
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-headline text-3xl md:text-4xl font-bold text-center mb-12">
+              Frequently Asked <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">Questions</span>
+            </h2>
+            <div className="space-y-8">
+              {faqs.map((faq, index) => (
+                <div key={index}>
+                  <h3 className="font-headline text-xl font-semibold text-foreground mb-2">"{faq.question}"</h3>
+                  <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-16">
+              <p className="text-xl text-foreground font-semibold mb-6">
+                “Join 5000+ Australian candidates who trusted MedWithPurpose for their UCAT journey.”
+              </p>
+              <Button size="lg" asChild className="bg-gradient-to-r from-primary via-secondary to-accent text-primary-foreground hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                <Link href="/auth/signup">
+                  <span className="inline-flex items-center">
+                    Start Free Trial
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </span>
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
