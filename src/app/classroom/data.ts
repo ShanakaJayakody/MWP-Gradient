@@ -1,5 +1,5 @@
 
-import type { Course } from "@/types/classroom";
+import type { Course, Module } from "@/types/classroom";
 
 export const mockCourses: Course[] = [
   {
@@ -172,8 +172,6 @@ export const getLessonById = (courseId: string, lessonId: string) => {
 };
 
 // Conceptual function to update course modules (used by admin edit course page)
-// In a real app, this would interact with a backend.
-// For this prototype, it might modify mockCourses directly if needed.
 export const updateCourseModules = (courseId: string, newModules: Course['modules']) => {
   const courseIndex = mockCourses.findIndex(c => c.id === courseId);
   if (courseIndex > -1) {
@@ -183,4 +181,21 @@ export const updateCourseModules = (courseId: string, newModules: Course['module
   }
   console.error("Failed to update mock course modules for:", courseId);
   return undefined;
+};
+
+// Helper function to delete a course
+export const deleteCourse = (courseId: string): boolean => {
+  const courseIndex = mockCourses.findIndex(c => c.id === courseId);
+  if (courseIndex > -1) {
+    mockCourses.splice(courseIndex, 1);
+    console.log("Mock course deleted:", courseId);
+    // Clean up localStorage for this course's last viewed lesson
+    localStorage.removeItem(`lastViewedLesson_${courseId}`);
+    // If lesson completions were stored per-course, you'd clear that too.
+    // For now, lessonCompletions is global in localStorage, so we won't touch it here
+    // unless we change its structure.
+    return true;
+  }
+  console.warn("Failed to delete mock course, course not found:", courseId);
+  return false;
 };

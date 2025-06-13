@@ -1,12 +1,12 @@
 
 "use client"
 
-import { notFound, useParams } from "next/navigation";
+import { notFound, useParams, useRouter } from "next/navigation"; // Added useRouter
 import React, { useEffect, useState } from "react";
-import { getLessonById, getCourseById } from "../../data";
+import { getLessonById, getCourseById, deleteCourse } from "../../data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, CheckSquare, Download, ListChecks, Type, Video, BookOpen } from "lucide-react";
+import { ArrowLeft, CheckSquare, Download, ListChecks, Type, Video, BookOpen, MoreVertical, Edit, Trash2, FilePlus2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { LessonCompletionCheckbox } from "@/components/classroom/lesson-completion-checkbox";
@@ -14,6 +14,25 @@ import { Accordion } from "@/components/ui/accordion";
 import { ModuleAccordion } from "@/components/classroom/module-accordion";
 import { Progress } from "@/components/ui/progress";
 import type { Lesson, Course, Module as ModuleType } from "@/types/classroom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+
 
 interface LessonPageParams {
   params: {
@@ -24,20 +43,22 @@ interface LessonPageParams {
 
 export default function LessonPage({ params }: LessonPageParams) {
   const { courseId, lessonId } = params;
+  const router = useRouter();
+  const { toast } = useToast();
   
   const [courseData, setCourseData] = useState<Course | null>(null);
   const [lessonData, setLessonData] = useState<{ course: Course; module: ModuleType; lesson: Lesson } | null>(null);
   const [lessonCompletions, setLessonCompletions] = useState<Record<string, boolean>>({});
   const [currentModuleIdOpen, setCurrentModuleIdOpen] = useState<string | undefined>(undefined);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     const course = getCourseById(courseId);
     const lessonDetails = getLessonById(courseId, lessonId);
 
     if (course) {
-      setCourseData(course); // Set initial course data
+      setCourseData(course); 
 
-      // Load completions from localStorage or defaults
       const storedCompletionsRaw = localStorage.getItem('lessonCompletions');
       const storedCompletions = storedCompletionsRaw ? JSON.parse(storedCompletionsRaw) : {};
       const initialCompletions: Record<string, boolean> = {};
@@ -55,7 +76,7 @@ export default function LessonPage({ params }: LessonPageParams) {
       const totalLessons = course.modules.reduce((acc, module) => acc + module.lessons.length, 0);
       if (totalLessons > 0) {
         const progress = Math.round((completedCount / totalLessons) * 100);
-        setCourseData(prevCourse => prevCourse ? { ...prevCourse, progress } : course); // Update course with progress
+        setCourseData(prevCourse => prevCourse ? { ...prevCourse, progress } : course);
       }
 
     } else {
@@ -66,7 +87,6 @@ export default function LessonPage({ params }: LessonPageParams) {
       setLessonData(lessonDetails);
       setCurrentModuleIdOpen(lessonDetails.module.id); 
       
-      // Update lessonCompletions for current lesson if not already set by batch load above
       setLessonCompletions(prevCompletions => ({
           ...prevCompletions,
           [lessonDetails.lesson.id]: prevCompletions[lessonDetails.lesson.id] || lessonDetails.lesson.isCompleted || false
@@ -75,11 +95,10 @@ export default function LessonPage({ params }: LessonPageParams) {
     } else {
       notFound(); 
     }
-  }, [courseId, lessonId]); // Removed lessonCompletions from deps to avoid loop on its own update
+  }, [courseId, lessonId]);
 
-  // Effect to save the current lesson as the last viewed for this course
   useEffect(() => {
-    if (courseId && lessonId && lessonData) { // Ensure lessonData is loaded
+    if (courseId && lessonId && lessonData) { 
       const localStorageKey = `lastViewedLesson_${courseId}`;
       localStorage.setItem(localStorageKey, lessonId);
     }
@@ -106,7 +125,26 @@ export default function LessonPage({ params }: LessonPageParams) {
         }
         return newCompletions;
     });
-    // console.log(`Lesson ${id} marked as ${completed ? 'complete' : 'incomplete'}`);
+  };
+
+  const handleDeleteCourseAction = () => {
+    if (courseData) {
+      const success = deleteCourse(courseData.id);
+      if (success) {
+        toast({
+          title: "Course Deleted",
+          description: `"${courseData.title}" has been successfully deleted.`,
+        });
+        router.push("/classroom");
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Error Deleting Course",
+          description: `Could not delete "${courseData.title}". Please try again.`,
+        });
+      }
+      setIsDeleteDialogOpen(false);
+    }
   };
 
   const getYouTubeEmbedUrl = (url: string) => {
@@ -127,6 +165,7 @@ export default function LessonPage({ params }: LessonPageParams) {
   const embedUrl = lesson.videoUrl ? getYouTubeEmbedUrl(lesson.videoUrl) : null;
 
   return (
+    <>
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col lg:flex-row gap-8">
         <aside className="w-full lg:w-1/3 xl:w-1/4 space-y-4 lg:sticky lg:top-20 lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto pr-4">
@@ -134,8 +173,36 @@ export default function LessonPage({ params }: LessonPageParams) {
             <Link href={`/classroom`}><ArrowLeft className="mr-2 h-4 w-4" /> Back to Classroom Overview</Link>
           </Button>
           <div className="p-4 border rounded-lg bg-card shadow">
-            <h2 className="font-headline text-xl mb-1">{course.title}</h2>
-            {/* Use courseData for progress as it's updated by completions */}
+            <div className="flex justify-between items-center mb-1">
+              <h2 className="font-headline text-xl">{course.title}</h2>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <MoreVertical className="h-4 w-4" />
+                    <span className="sr-only">Course Options</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link href={`/admin/edit-course/${course.id}`}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      Edit Course & Modules
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href={`/admin/edit-lesson/new-lesson?courseId=${course.id}`}>
+                     <FilePlus2 className="mr-2 h-4 w-4" />
+                      Add New Lesson
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)} className="text-destructive focus:text-destructive focus:bg-destructive/10">
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    Delete Course
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             {courseData.progress !== undefined && (
                 <>
                 <p className="text-xs text-muted-foreground mb-1">{courseData.progress}% complete</p>
@@ -237,6 +304,23 @@ export default function LessonPage({ params }: LessonPageParams) {
         </main>
       </div>
     </div>
+    <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this course?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the course
+              "{courseData?.title}" and all of its associated modules and lessons.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteCourseAction} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
+              Delete Course
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
-
