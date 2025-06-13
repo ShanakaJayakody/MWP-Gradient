@@ -12,19 +12,19 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 260 70% 50%; /* Darker Purple */
+    --primary: 260 70% 40%; /* Darker Purple */
     --primary-foreground: 210 20% 98%; /* Light text on primary */
-    --secondary: 280 75% 58%; /* Violet - mid-tone */
+    --secondary: 280 75% 40%; /* Violet - mid-tone */
     --secondary-foreground: 210 20% 98%; /* Light text on this secondary */
     --muted: 220 14.3% 95.9%; /* light gray */
     --muted-foreground: 220 8.9% 46.1%; /* darker gray text on muted */
-    --accent: 300 80% 65%; /* Vibrant Pink/Magenta */
+    --accent: 300 80% 45%; /* Vibrant Pink/Magenta */
     --accent-foreground: 0 0% 100%; /* white text on accent */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 260 70% 50%; /* Updated to match new primary */
+    --ring: 260 70% 40%; 
     --radius: 0.5rem;
 
     /* Chart colors (absolute) */
@@ -37,12 +37,12 @@
     /* Sidebar colors - Light Theme */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 10% 3.9%;
-    --sidebar-primary: 260 70% 50%; /* Updated to match new primary */
+    --sidebar-primary: 260 70% 40%; 
     --sidebar-primary-foreground: 210 20% 98%;
     --sidebar-accent: 0 0% 94%;
     --sidebar-accent-foreground: 240 10% 3.9%;
     --sidebar-border: 220 13% 88%;
-    --sidebar-ring: 260 70% 50%; /* Updated to match new primary */
+    --sidebar-ring: 260 70% 40%; 
   }
 
   .dark {
@@ -53,19 +53,19 @@
     --card-foreground: 220 14% 90%;
     --popover: 254 40% 13%;
     --popover-foreground: 220 14% 90%;
-    --primary: 260 70% 50%; /* Darker Purple */
+    --primary: 260 70% 40%; /* Darker Purple */
     --primary-foreground: 220 14% 95%;
-    --secondary: 280 75% 58%; /* Violet - mid-tone */
-    --secondary-foreground: 220 14% 80%;
+    --secondary: 280 75% 40%; /* Violet - mid-tone */
+    --secondary-foreground: 220 14% 95%; /* Adjusted for better contrast with darker secondary */
     --muted: 253 30% 25%;
     --muted-foreground: 220 10% 65%;
-    --accent: 300 80% 65%; /* Vibrant Pink/Magenta */
+    --accent: 300 80% 45%; /* Vibrant Pink/Magenta */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 253 30% 30%;
     --input: 253 30% 28%;
-    --ring: 260 70% 55%; /* Updated to match new primary, slightly lighter for dark mode ring */
+    --ring: 260 70% 45%; /* Slightly lighter ring for dark mode */
 
     /* Chart colors are absolute, no need to repeat if they are the same */
     /* --chart-1: 220 70% 50%; */
@@ -77,12 +77,12 @@
     /* Sidebar colors - Dark Theme */
     --sidebar-background: 253 50% 8%;
     --sidebar-foreground: 220 14% 90%;
-    --sidebar-primary: 260 70% 50%; /* Updated to match new primary */
+    --sidebar-primary: 260 70% 40%; 
     --sidebar-primary-foreground: 220 14% 95%;
     --sidebar-accent: 253 40% 20%;
     --sidebar-accent-foreground: 220 14% 80%;
     --sidebar-border: 253 30% 30%;
-    --sidebar-ring: 260 70% 55%; /* Updated to match new primary, slightly lighter for dark mode ring */
+    --sidebar-ring: 260 70% 45%; 
   }
 }
 
