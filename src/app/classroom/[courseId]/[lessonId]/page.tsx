@@ -3,7 +3,7 @@
 
 import { notFound, useParams, useRouter } from "next/navigation"; // Added useRouter
 import React, { useEffect, useState } from "react";
-import { getLessonById, getCourseById, deleteCourse } from "../../data";
+import { getLessonById, getCourseById, deleteCourse, updateCourseModules } from "../../data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowLeft, CheckSquare, Download, ListChecks, Type, Video, BookOpen, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus } from "lucide-react";
@@ -32,6 +32,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { AddModuleDialog } from "@/components/classroom/add-module-dialog"; // New import
 
 
 interface LessonPageParams {
@@ -47,14 +48,15 @@ export default function LessonPage({ params }: LessonPageParams) {
   const { toast } = useToast();
   
   const [courseData, setCourseData] = useState<Course | null>(null);
-  const [lessonData, setLessonData] = useState<{ course: Course; module: ModuleType; lesson: Lesson } | null>(null);
+  const [lessonDetails, setLessonDetails] = useState<{ course: Course; module: ModuleType; lesson: Lesson } | null>(null);
   const [lessonCompletions, setLessonCompletions] = useState<Record<string, boolean>>({});
   const [currentModuleIdOpen, setCurrentModuleIdOpen] = useState<string | undefined>(undefined);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false); // State for Add Module Dialog
 
   useEffect(() => {
     const course = getCourseById(courseId);
-    const lessonDetails = getLessonById(courseId, lessonId);
+    const lesson = getLessonById(courseId, lessonId);
 
     if (course) {
       setCourseData(course); 
@@ -76,6 +78,7 @@ export default function LessonPage({ params }: LessonPageParams) {
       const totalLessons = course.modules.reduce((acc, module) => acc + module.lessons.length, 0);
       if (totalLessons > 0) {
         const progress = Math.round((completedCount / totalLessons) * 100);
+        // Update courseData with progress. Create a new object to ensure state update.
         setCourseData(prevCourse => prevCourse ? { ...prevCourse, progress } : course);
       }
 
@@ -83,26 +86,26 @@ export default function LessonPage({ params }: LessonPageParams) {
       notFound(); 
     }
 
-    if (lessonDetails) {
-      setLessonData(lessonDetails);
-      setCurrentModuleIdOpen(lessonDetails.module.id); 
+    if (lesson) {
+      setLessonDetails(lesson);
+      setCurrentModuleIdOpen(lesson.module.id); 
       
       setLessonCompletions(prevCompletions => ({
           ...prevCompletions,
-          [lessonDetails.lesson.id]: prevCompletions[lessonDetails.lesson.id] || lessonDetails.lesson.isCompleted || false
+          [lesson.lesson.id]: prevCompletions[lesson.lesson.id] || lesson.lesson.isCompleted || false
       }));
 
     } else {
       notFound(); 
     }
-  }, [courseId, lessonId]);
+  }, [courseId, lessonId]); // Dependency array
 
   useEffect(() => {
-    if (courseId && lessonId && lessonData) { 
+    if (courseId && lessonId && lessonDetails) { 
       const localStorageKey = `lastViewedLesson_${courseId}`;
       localStorage.setItem(localStorageKey, lessonId);
     }
-  }, [courseId, lessonId, lessonData]);
+  }, [courseId, lessonId, lessonDetails]);
 
 
   const handleCompletionChange = (id: string, completed: boolean) => {
@@ -147,13 +150,33 @@ export default function LessonPage({ params }: LessonPageParams) {
     }
   };
 
+  const handleAddModuleCallback = (moduleName: string, isPublished: boolean) => {
+    if (courseData) {
+      const newModule: ModuleType = {
+        id: `module-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+        title: moduleName,
+        description: isPublished ? "Published module" : "Draft module",
+        lessons: [],
+      };
+      const updatedModules = [...courseData.modules, newModule];
+      updateCourseModules(courseData.id, updatedModules);
+      setCourseData(getCourseById(courseId)); // Re-fetch to update state
+
+      toast({
+        title: "Module Added",
+        description: `"${moduleName}" has been added to ${courseData.title}.`,
+      });
+    }
+    setIsAddModuleDialogOpen(false);
+  };
+
   const getYouTubeEmbedUrl = (url: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}` : null;
   };
 
-  if (!courseData || !lessonData) {
+  if (!courseData || !lessonDetails) {
     return (
         <div className="container mx-auto py-8 px-4 text-center">
             <p className="text-lg text-muted-foreground">Loading lesson details...</p>
@@ -161,7 +184,7 @@ export default function LessonPage({ params }: LessonPageParams) {
     );
   }
 
-  const { course, module, lesson } = lessonData;
+  const { course, module, lesson } = lessonDetails;
   const embedUrl = lesson.videoUrl ? getYouTubeEmbedUrl(lesson.videoUrl) : null;
 
   return (
@@ -189,14 +212,12 @@ export default function LessonPage({ params }: LessonPageParams) {
                       Edit course
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href={`/admin/edit-course/${course.id}`}>
-                      <FolderPlus className="mr-2 h-4 w-4" />
-                      Add Module
-                    </Link>
+                  <DropdownMenuItem onSelect={() => setIsAddModuleDialogOpen(true)} className="cursor-pointer">
+                    <FolderPlus className="mr-2 h-4 w-4" />
+                    Add Module
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href={`/admin/edit-lesson/new-lesson?courseId=${course.id}`}>
+                    <Link href={`/admin/edit-lesson/new-lesson?courseId=${course.id}&moduleId=${module.id}`}>
                      <FilePlus2 className="mr-2 h-4 w-4" />
                       Add Lesson
                     </Link>
@@ -327,6 +348,15 @@ export default function LessonPage({ params }: LessonPageParams) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Add Module Dialog instance */}
+      {courseData && (
+        <AddModuleDialog
+            open={isAddModuleDialogOpen}
+            onOpenChange={setIsAddModuleDialogOpen}
+            onAddModule={(moduleName, isPublished) => handleAddModuleCallback(moduleName, isPublished)}
+        />
+      )}
     </>
   );
 }
