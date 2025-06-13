@@ -5,79 +5,120 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea"; // Textarea not used here for module details currently
 import { PlusCircle, Edit3, Trash2, ListTree, FilePlus2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
 import Link from "next/link";
-// import { getCourseById, updateCourseModules } from "@/app/classroom/data"; // Conceptual
+import { getCourseById, updateCourseModules } from "@/app/classroom/data"; 
+import type { Course, Module } from "@/types/classroom"; // Ensure Module type is correctly imported or defined
 
-// This is a conceptual placeholder for an admin feature.
-// It would fetch existing course data, allow adding/editing/deleting modules,
-// and then link to adding/editing lessons within those modules.
-
-interface Module {
+// Re-defining Module type locally if it's not directly from types/classroom or needs specific fields for this page
+interface EditableModule {
   id: string;
   title: string;
   description?: string;
-  // lessons would be managed on a separate page or inline editor
 }
 
 export default function EditCoursePage() {
   const params = useParams();
   const courseId = params.courseId as string;
 
-  const [courseTitle, setCourseTitle] = useState("");
-  const [modules, setModules] = useState<Module[]>([]);
+  const [course, setCourse] = useState<Course | null>(null);
+  const [modules, setModules] = useState<EditableModule[]>([]);
   const [newModuleTitle, setNewModuleTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (courseId) {
-      // In a real app, fetch course data including its modules
-      // const fetchedCourse = getCourseById(courseId);
-      console.log(`Fetching data for course ID: ${courseId}`);
-      // if (fetchedCourse) {
-      //   setCourseTitle(fetchedCourse.title);
-      //   setModules(fetchedCourse.modules.map(m => ({ id: m.id, title: m.title, description: m.description })));
-      // } else {
-      //   // notFound(); or show error
-      // }
-      setCourseTitle(`Editing Course: ${courseId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`); // Placeholder
-      // Simulate fetching some modules
-      setModules([
-        { id: "module-1-placeholder", title: "Sample Module 1: Introduction" },
-        { id: "module-2-placeholder", title: "Sample Module 2: Core Concepts" },
-      ]);
+      setIsLoading(true);
+      const fetchedCourse = getCourseById(courseId);
+      if (fetchedCourse) {
+        setCourse(fetchedCourse);
+        setModules(fetchedCourse.modules.map(m => ({ id: m.id, title: m.title, description: m.description })));
+      } else {
+        // If course is not found (e.g. after a refresh and mock data is reset, or invalid ID)
+        // For a newly created course, it should be found in mockCourses.
+        // If it's truly not found for other reasons, call notFound().
+        // However, for this prototype, we'll show a generic title if it's not found after creation.
+        console.warn(`Course with ID ${courseId} not found. This might happen if mock data was reset.`);
+        // To prevent app crash on direct navigation/refresh if data isn't persisted beyond session:
+        // setCourse(null); // Or handle as "not found"
+        // For now, let's allow a generic title to appear for robustness in dev
+      }
+      setIsLoading(false);
     }
   }, [courseId]);
 
   if (!courseId) {
+    // This case should ideally not be hit if routing is set up,
+    // but as a fallback, or if courseId is somehow undefined/empty.
     notFound();
   }
+  
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4 text-center">
+        <p>Loading course details...</p>
+      </div>
+    );
+  }
+
+  // If after loading, course is still null (e.g. invalid ID and not found by getCourseById)
+  // and we want to be strict, we can use notFound() here.
+  // However, for the flow from "create course", it should exist.
+  // if (!course && !isLoading) { 
+  //   notFound();
+  // }
+
 
   const handleAddModule = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newModuleTitle.trim()) return;
-    const newModule: Module = {
+    if (!newModuleTitle.trim() || !course) return;
+    const newModule: EditableModule = {
       id: `module-${Date.now()}`, // Simple unique ID for demo
       title: newModuleTitle,
     };
-    setModules([...modules, newModule]);
+    const updatedModules = [...modules, newModule];
+    setModules(updatedModules);
+    
+    // Update the course in our mock data
+    const courseModulesForUpdate: Module[] = updatedModules.map(em => ({
+        id: em.id,
+        title: em.title,
+        description: em.description,
+        lessons: [], // New modules initially have no lessons
+    }));
+    updateCourseModules(course.id, courseModulesForUpdate);
+
     setNewModuleTitle("");
-    console.log("Adding new module:", newModule, "to course:", courseId);
-    alert("Module added (placeholder). In a real app, this would be saved to the backend.");
+    console.log("Adding new module:", newModule, "to course:", course.id);
+    // No alert needed, UI updates.
   };
 
   const handleDeleteModule = (moduleId: string) => {
-    setModules(modules.filter(m => m.id !== moduleId));
-    console.log("Deleting module:", moduleId, "from course:", courseId);
-    alert("Module deleted (placeholder).");
+    if (!course) return;
+    const updatedModules = modules.filter(m => m.id !== moduleId);
+    setModules(updatedModules);
+    
+    const courseModulesForUpdate: Module[] = updatedModules.map(em => ({
+        id: em.id,
+        title: em.title,
+        description: em.description,
+        lessons: course.modules.find(cm => cm.id === em.id)?.lessons || [], // Preserve existing lessons if any
+    }));
+    updateCourseModules(course.id, courseModulesForUpdate);
+
+    console.log("Deleting module:", moduleId, "from course:", course.id);
   }
+
+  const pageTitle = course ? `Editing Course: ${course.title}` : `Editing Course: ${courseId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`;
+
 
   return (
     <div className="container mx-auto py-8 px-4">
       <header className="mb-10 text-center">
-        <h1 className="font-headline text-4xl font-bold mb-3">{courseTitle || "Loading course..."}</h1>
+        <h1 className="font-headline text-4xl font-bold mb-3">{pageTitle}</h1>
         <p className="text-lg text-muted-foreground">
           Manage modules and lessons for this course.
         </p>
@@ -98,16 +139,13 @@ export default function EditCoursePage() {
                     {module.description && <p className="text-sm text-muted-foreground">{module.description}</p>}
                   </div>
                   <div className="space-x-2">
-                     {/* In a real app, these would link to pages to edit module details or manage lessons */}
                     <Button variant="outline" size="sm" asChild>
-                        {/* For now, let's assume lesson editing is via a generic lesson editor page */}
-                        {/* This would ideally link to a page filtered by this module or allow adding lessons to this module. */}
-                        {/* For simplicity, we can link to a generic "create lesson" or "edit lesson" page with courseId context. */}
-                        <Link href={`/admin/edit-lesson/new-lesson-for-${module.id}`}> {/* Conceptual link */}
+                        {/* Pass courseId and moduleId to the lesson editor */}
+                        <Link href={`/admin/edit-lesson/new-lesson?courseId=${courseId}&moduleId=${module.id}`}>
                             <FilePlus2 className="mr-1 h-4 w-4" /> Manage Lessons
                         </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => alert(`Editing module '${module.title}' (placeholder)`)}>
+                    <Button variant="ghost" size="icon" onClick={() => alert(`Editing module '${module.title}' (placeholder for deeper module edit functionality)`)}>
                       <Edit3 className="h-4 w-4" />
                     </Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDeleteModule(module.id)}>
@@ -130,6 +168,7 @@ export default function EditCoursePage() {
               placeholder="e.g., Advanced Strategies" 
               required 
             />
+            {/* Conceptual: Add Textarea for module description if needed here */}
             <Button type="submit">
               <PlusCircle className="mr-2 h-5 w-5" />
               Add Module
@@ -141,7 +180,7 @@ export default function EditCoursePage() {
       <div className="text-center">
         <Button variant="outline" asChild>
             <Link href="/classroom">
-                <ListTree className="mr-2 h-4 w-4" /> View All Courses (Admin View Placeholder)
+                <ListTree className="mr-2 h-4 w-4" /> View All Courses
             </Link>
         </Button>
       </div>

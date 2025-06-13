@@ -149,6 +149,11 @@ export const mockCourses: Course[] = [
   },
 ];
 
+// Helper function to add a course
+export const addCourse = (course: Course) => {
+  mockCourses.push(course);
+};
+
 // Helper function to find a course by ID
 export const getCourseById = (courseId: string): Course | undefined => {
   return mockCourses.find(course => course.id === courseId);
@@ -166,3 +171,16 @@ export const getLessonById = (courseId: string, lessonId: string) => {
   return undefined;
 };
 
+// Conceptual function to update course modules (used by admin edit course page)
+// In a real app, this would interact with a backend.
+// For this prototype, it might modify mockCourses directly if needed.
+export const updateCourseModules = (courseId: string, newModules: Course['modules']) => {
+  const courseIndex = mockCourses.findIndex(c => c.id === courseId);
+  if (courseIndex > -1) {
+    mockCourses[courseIndex].modules = newModules;
+    console.log("Mock course modules updated for:", courseId);
+    return mockCourses[courseIndex];
+  }
+  console.error("Failed to update mock course modules for:", courseId);
+  return undefined;
+};

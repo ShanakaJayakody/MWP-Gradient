@@ -8,9 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PlusCircle } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { addCourse } from "@/app/classroom/data";
+import type { Course } from "@/types/classroom";
 
 export default function CreateCoursePage() {
+  const router = useRouter();
   const [courseTitle, setCourseTitle] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -19,11 +22,22 @@ export default function CreateCoursePage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would send this data to your backend
-    const newCourseId = courseTitle.toLowerCase().replace(/\s+/g, '-'); // simple ID generation
-    console.log("Submitting new course:", { courseId: newCourseId, courseTitle, courseDescription, imageUrl, instructor, duration });
-    alert("Course creation functionality is a placeholder. Check console for data. You would then be redirected to edit this course to add modules and lessons.");
-    // Reset form or redirect to the new edit course page e.g. /admin/edit-course/${newCourseId}
+    const newCourseId = courseTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''); // simple ID generation
+    
+    const newCourse: Course = {
+      id: newCourseId,
+      title: courseTitle,
+      description: courseDescription,
+      imageUrl: imageUrl || `https://placehold.co/600x400.png?text=${encodeURIComponent(courseTitle)}`,
+      instructor: instructor || undefined,
+      duration: duration || undefined,
+      modules: [], // New courses start with no modules
+      progress: 0, // New courses start with 0 progress
+    };
+
+    addCourse(newCourse);
+    console.log("New course added to mock data:", newCourse);
+    router.push(`/admin/edit-course/${newCourseId}`);
   };
 
   return (
@@ -38,7 +52,7 @@ export default function CreateCoursePage() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle className="font-headline text-2xl">Course Details</CardTitle>
-          <CardDescription>Fill in the initial information for the new course. You can add modules and lessons in the next step by editing the course.</CardDescription>
+          <CardDescription>Fill in the initial information for the new course. You will be redirected to edit the course and add modules/lessons afterwards.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -97,8 +111,7 @@ export default function CreateCoursePage() {
             </div>
 
             <p className="text-sm text-muted-foreground">
-              After creating the course, you will be able to add modules and lessons.
-              For this prototype, you would typically navigate to an "Edit Course" page.
+              After creating the course, you will be redirected to the "Edit Course" page to add modules and lessons.
             </p>
 
             <Button type="submit" className="w-full">
