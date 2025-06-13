@@ -4,6 +4,7 @@ import { mockCourses } from "./data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
+import { Card } from "@/components/ui/card"; // Added this import
 
 export default function ClassroomPage() {
   // In a real app, user role would determine if this button is shown.
