@@ -67,13 +67,13 @@ export default function HomePage() {
       {/* HERO SECTION */}
       <section id="hero" className="py-20 md:py-32 relative overflow-hidden min-h-[calc(100vh-4rem)] flex flex-col justify-center items-center">
         <Image
-          src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/web_frontpage_banner"
+          src="https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/web_home_banner?updatedAt=1749779414396"
           alt="Hero Background"
           layout="fill"
           objectFit="cover"
           className="opacity-60"
           priority
-          data-ai-hint="abstract background"
+          data-ai-hint="abstract background students"
         />
         <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-radial from-primary/20 via-transparent to-transparent blur-3xl animate-pulse opacity-70"></div>
