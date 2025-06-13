@@ -83,7 +83,7 @@ export default function HomePage() {
           <div className="relative z-10 text-left max-w-2xl">
             <h1 className="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight">
               <span className="text-white dark:text-foreground">Welcome To</span> <span className="bg-gradient-to-r from-primary via-secondary to-accent text-transparent bg-clip-text">MedWithPurpose</span>
-              <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-white dark:text-muted-foreground">
+              <span className="block text-2xl md:text-3xl lg:text-4xl font-semibold mt-3 text-white">
                 Smarter UCAT prep, for future doctors.
               </span>
             </h1>
