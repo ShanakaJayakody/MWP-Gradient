@@ -4,7 +4,9 @@ import { mockCourses } from "./data";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
-import { Card } from "@/components/ui/card"; // Added this import
+import { Card } from "@/components/ui/card";
+
+export const dynamic = 'force-dynamic'; // Ensures the page is re-rendered on the server for each request
 
 export default function ClassroomPage() {
   // In a real app, user role would determine if this button is shown.
