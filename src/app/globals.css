@@ -16,8 +16,6 @@
     --primary-foreground: 210 20% 98%; /* Light text on primary */
     --secondary: 280 75% 40%; /* Violet - mid-tone */
     --secondary-foreground: 210 20% 98%; /* Light text on this secondary */
-    --muted: 220 14.3% 95.9%; /* light gray */
-    --muted-foreground: 220 8.9% 46.1%; /* darker gray text on muted */
     --accent: 300 80% 45%; /* Vibrant Pink/Magenta */
     --accent-foreground: 0 0% 100%; /* white text on accent */
     --destructive: 0 84.2% 60.2%;
@@ -46,38 +44,38 @@
   }
 
   .dark {
-    /* Dark Theme - Gradient Swapped */
+    /* Dark Theme - Reverted Gradient (Purple -> Pink) */
     --background: 253 50% 8%;
     --foreground: 220 14% 90%;
     --card: 254 40% 13%;
     --card-foreground: 220 14% 90%;
     --popover: 254 40% 13%;
     --popover-foreground: 220 14% 90%;
-    --primary: 300 80% 45%; /* Vibrant Pink/Magenta */
-    --primary-foreground: 220 14% 95%; /* Light text on pink */
+    --primary: 260 70% 40%; /* Darker Purple */
+    --primary-foreground: 0 0% 100%; /* White text on dark purple */
     --secondary: 280 75% 40%; /* Violet - mid-tone */
     --secondary-foreground: 220 14% 95%; /* Light text on violet */
     --muted: 253 30% 25%;
     --muted-foreground: 220 10% 65%;
-    --accent: 260 70% 40%; /* Darker Purple */
-    --accent-foreground: 0 0% 100%; /* White text on dark purple */
+    --accent: 300 80% 45%; /* Vibrant Pink/Magenta */
+    --accent-foreground: 220 14% 95%; /* Light text on pink */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 253 30% 30%;
     --input: 253 30% 28%;
-    --ring: 300 80% 50%; /* Ring based on new primary (Pink/Magenta), slightly lighter */
+    --ring: 260 70% 50%; /* Ring based on dark purple primary */
 
     /* Chart colors are absolute, no need to repeat if they are the same */
 
     /* Sidebar colors - Dark Theme */
     --sidebar-background: 253 50% 8%;
     --sidebar-foreground: 220 14% 90%;
-    --sidebar-primary: 300 80% 45%; /* New primary */
-    --sidebar-primary-foreground: 220 14% 95%;
+    --sidebar-primary: 260 70% 40%; /* Dark Purple */
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 253 40% 20%;
     --sidebar-accent-foreground: 220 14% 80%;
     --sidebar-border: 253 30% 30%;
-    --sidebar-ring: 300 80% 50%; /* New ring for sidebar, based on new primary */
+    --sidebar-ring: 260 70% 50%; /* Ring for sidebar, based on dark purple */
   }
 }
 
