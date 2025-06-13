@@ -9,7 +9,7 @@ import { Accordion } from "@/components/ui/accordion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus } from "lucide-react";
+import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus, GripVertical } from "lucide-react";
 import type { Module } from "@/types/classroom";
 import React, { useEffect, useState } from 'react';
 import {
@@ -32,6 +32,24 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { AddModuleDialog } from "@/components/classroom/add-module-dialog";
 
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
 interface CoursePageProps {
   params: { courseId: string };
 }
@@ -39,6 +57,36 @@ interface CoursePageProps {
 interface CourseClientPageProps {
   courseId: string;
 }
+
+// Wrapper for ModuleAccordion to integrate with dnd-kit's useSortable
+function SortableModuleItem({ module, ...props }: { module: Module } & Omit<React.ComponentProps<typeof ModuleAccordion>, 'module' | 'setNodeRef' | 'attributes' | 'listeners' | 'style' | 'isDragging'>) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: module.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <ModuleAccordion
+      module={module}
+      setNodeRef={setNodeRef}
+      attributes={attributes}
+      listeners={listeners}
+      style={style}
+      isDragging={isDragging}
+      {...props}
+    />
+  );
+}
+
 
 function CourseClientPage({ courseId }: CourseClientPageProps) {
   const router = useRouter();
@@ -52,6 +100,13 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
   const [moduleToDelete, setModuleToDelete] = useState<string | null>(null);
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
   useEffect(() => {
     const fetchedCourse = getCourseById(courseId);
     setCurrentCourse(fetchedCourse);
@@ -61,17 +116,30 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       const lastViewedLessonId = localStorage.getItem(localStorageKey);
 
       if (lastViewedLessonId) {
-        router.replace(`/classroom/${courseId}/${lastViewedLessonId}`);
-      } else if (fetchedCourse.modules?.[0]?.lessons?.[0]?.id) {
+        // Check if lesson still exists
+        const lessonExists = fetchedCourse.modules.some(m => m.lessons.some(l => l.id === lastViewedLessonId));
+        if (lessonExists) {
+          router.replace(`/classroom/${courseId}/${lastViewedLessonId}`);
+          return; // Important: return to prevent further execution if redirecting
+        } else {
+          localStorage.removeItem(localStorageKey); // Clean up invalid ID
+        }
+      }
+      
+      // If no valid lastViewedLessonId or it was cleaned up, try first lesson
+      if (fetchedCourse.modules?.[0]?.lessons?.[0]?.id) {
         const firstLessonId = fetchedCourse.modules[0].lessons[0].id;
         router.replace(`/classroom/${courseId}/${firstLessonId}`);
-      } else {
-        setIsLoading(false);
+        return; 
       }
-    } else if (fetchedCourse === undefined && courseId) {
+      // If no lessons, just stay on this page
+      setIsLoading(false);
+
+    } else if (fetchedCourse === undefined && courseId) { // Course explicitly not found
       setIsLoading(false); 
     }
   }, [courseId, router]);
+
 
   useEffect(() => {
     if (currentCourse) {
@@ -84,9 +152,10 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         });
       });
       setLessonCompletions(initialCompletions);
-      setIsLoading(false);
-    } else if (!currentCourse && !isLoading) {
-      // Handled by notFound() below
+      if (isLoading) setIsLoading(false); // Set loading to false if it was true and course data is now processed
+    } else if (!currentCourse && !isLoading) { // Course is null and we are not already loading
+      // This implies course was not found initially or after an operation.
+      // notFound() will be called below if currentCourse is still null after isLoading check.
     }
   }, [currentCourse, isLoading]);
 
@@ -138,7 +207,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
           title: "Module Deleted",
           description: `Module has been successfully deleted from "${currentCourse.title}".`,
         });
-        setCurrentCourse(getCourseById(courseId)); // Refresh course data
+        setCurrentCourse(getCourseById(courseId)); 
       } else {
         toast({
           variant: "destructive",
@@ -159,7 +228,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
           title: "Module Duplicated",
           description: `Module "${duplicated.title}" has been successfully created.`,
         });
-        setCurrentCourse(getCourseById(courseId)); // Refresh course data
+        setCurrentCourse(getCourseById(courseId)); 
       } else {
         toast({
           variant: "destructive",
@@ -169,6 +238,24 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       }
     }
   };
+
+  function handleModuleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (currentCourse && active.id !== over?.id && over) {
+      const oldIndex = currentCourse.modules.findIndex((m) => m.id === active.id);
+      const newIndex = currentCourse.modules.findIndex((m) => m.id === over.id);
+      
+      const reorderedModules = arrayMove(currentCourse.modules, oldIndex, newIndex);
+      
+      // Update state optimistically
+      setCurrentCourse(prevCourse => prevCourse ? { ...prevCourse, modules: reorderedModules } : null);
+      
+      // "Persist" change to mock data
+      updateCourseModules(courseId, reorderedModules); 
+      
+      toast({ title: "Module Reordered", description: "The module order has been updated." });
+    }
+  }
   
   if (isLoading && !(currentCourse && (localStorage.getItem(`lastViewedLesson_${courseId}`) || currentCourse.modules?.[0]?.lessons?.[0]?.id))) {
      return (
@@ -242,22 +329,32 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         
         <h2 className="font-headline text-2xl font-semibold mb-6">Course Modules</h2>
         {currentCourse.modules.length > 0 ? (
-          <Accordion type="multiple" className="w-full space-y-4" defaultValue={currentCourse.modules.map(m => m.id)}>
-            {currentCourse.modules.map((module) => (
-              <Card key={module.id} className="overflow-hidden">
-                   <ModuleAccordion 
-                      module={module} 
-                      courseId={currentCourse.id} 
-                      lessonCompletions={lessonCompletions}
-                      onDeleteModule={(moduleId) => {
-                        setModuleToDelete(moduleId);
-                        setIsDeleteModuleDialogOpen(true);
-                      }}
-                      onDuplicateModule={handleDuplicateModuleAction}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleModuleDragEnd}
+          >
+            <SortableContext
+              items={currentCourse.modules.map(m => m.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <Accordion type="multiple" className="w-full space-y-0" defaultValue={currentCourse.modules.map(m => m.id)}>
+                {currentCourse.modules.map((module) => (
+                  <SortableModuleItem
+                    key={module.id}
+                    module={module} 
+                    courseId={currentCourse.id} 
+                    lessonCompletions={lessonCompletions}
+                    onDeleteModule={(moduleId) => {
+                      setModuleToDelete(moduleId);
+                      setIsDeleteModuleDialogOpen(true);
+                    }}
+                    onDuplicateModule={handleDuplicateModuleAction}
                   />
-              </Card>
-            ))}
-          </Accordion>
+                ))}
+              </Accordion>
+            </SortableContext>
+          </DndContext>
         ) : (
           <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Add Module" in the options menu above.</p>
         )}
