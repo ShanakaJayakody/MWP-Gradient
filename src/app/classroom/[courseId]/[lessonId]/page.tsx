@@ -31,8 +31,9 @@ import { Separator } from "@/components/ui/separator";
 import { Accordion } from "@/components/ui/accordion";
 import { ModuleAccordion } from "@/components/classroom/module-accordion";
 import { LessonCompletionCheckbox } from "@/components/classroom/lesson-completion-checkbox";
-import type { Course, Module, Lesson } from "@/types/classroom";
+import type { Course, Module, Lesson, FileInfo } from "@/types/classroom";
 import { getCourseById, deleteCourse, updateCourseModules, getLessonById } from "../../data";
+import { EditableLessonSection } from "@/components/classroom/editable-lesson-section";
 
 interface CourseClientPageProps {
   courseId: string;
@@ -52,6 +53,7 @@ export default function LessonPage() {
   const [currentModuleIdOpen, setCurrentModuleIdOpen] = useState<string | undefined>(undefined);
   const [isDeleteCourseDialogOpen, setIsDeleteCourseDialogOpen] = useState(false);
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(true); // TODO: Replace with actual admin check
 
   useEffect(() => {
     if (!courseId || !lessonId) {
@@ -164,7 +166,7 @@ export default function LessonPage() {
       const updatedModules = [...courseData.modules, newModule];
       updateCourseModules(courseData.id, updatedModules);
       const updatedCourse = getCourseById(courseId);
-      setCourseData(updatedCourse);
+      setCourseData(updatedCourse || null);
       toast({
         title: "Module Added",
         description: `"${moduleName}" has been added to ${courseData.title}.`,
@@ -180,6 +182,54 @@ export default function LessonPage() {
       // Save to local storage
       const key = `videoProgress_${lesson.id}`;
       localStorage.setItem(key, time.toString());
+    }
+  };
+
+  const handleVideoSave = (newVideoUrl: string) => {
+    if (lessonDetails) {
+      const updatedLesson = { ...lessonDetails.lesson, videoUrl: newVideoUrl };
+      setLessonDetails({ ...lessonDetails, lesson: updatedLesson });
+      // TODO: Add API call to save changes
+      toast({
+        title: "Changes Saved",
+        description: "Video URL has been updated successfully.",
+      });
+    }
+  };
+
+  const handleContentSave = (newContent: string) => {
+    if (lessonDetails) {
+      const updatedLesson = { ...lessonDetails.lesson, textContent: newContent };
+      setLessonDetails({ ...lessonDetails, lesson: updatedLesson });
+      // TODO: Add API call to save changes
+      toast({
+        title: "Changes Saved",
+        description: "Lesson content has been updated successfully.",
+      });
+    }
+  };
+
+  const handleActionItemsSave = (newActionItems: string[]) => {
+    if (lessonDetails) {
+      const updatedLesson = { ...lessonDetails.lesson, actionItems: newActionItems };
+      setLessonDetails({ ...lessonDetails, lesson: updatedLesson });
+      // TODO: Add API call to save changes
+      toast({
+        title: "Changes Saved",
+        description: "Action items have been updated successfully.",
+      });
+    }
+  };
+
+  const handleFilesSave = (newFiles: FileInfo[]) => {
+    if (lessonDetails) {
+      const updatedLesson = { ...lessonDetails.lesson, files: newFiles };
+      setLessonDetails({ ...lessonDetails, lesson: updatedLesson });
+      // TODO: Add API call to save changes
+      toast({
+        title: "Changes Saved",
+        description: "Resource files have been updated successfully.",
+      });
     }
   };
 
@@ -267,22 +317,59 @@ export default function LessonPage() {
                 </div>
               </CardHeader>
               <CardContent className="p-6">
+                {isAdmin && (
+                  <div className="mb-8">
+                    <EditableLessonSection
+                      title="Video"
+                      type="video"
+                      value={lesson.videoUrl || ""}
+                      onSave={handleVideoSave}
+                    />
+                  </div>
+                )}
+                
                 {lesson.videoUrl && (
                   <div className="mb-8">
                     <VideoPlayer lesson={lesson} onTimeUpdate={handleVideoTimeUpdate} />
                   </div>
                 )}
 
+                {isAdmin && (
+                  <div className="mb-8">
+                    <EditableLessonSection
+                      title="Content"
+                      type="content"
+                      value={lesson.textContent || ""}
+                      onSave={handleContentSave}
+                    />
+                  </div>
+                )}
+
                 {lesson.textContent && (
                   <section className="mb-8 prose dark:prose-invert max-w-none">
-                    <h2 className="font-headline text-2xl mb-3 flex items-center"><Type className="mr-2 h-6 w-6 text-primary" /> Lesson Content</h2>
+                    <h2 className="font-headline text-2xl mb-3 flex items-center">
+                      <Type className="mr-2 h-6 w-6 text-primary" /> Lesson Content
+                    </h2>
                     <div dangerouslySetInnerHTML={{ __html: lesson.textContent }} />
                   </section>
                 )}
 
+                {isAdmin && (
+                  <div className="mb-8">
+                    <EditableLessonSection
+                      title="Action Items"
+                      type="actionItems"
+                      value={lesson.actionItems || []}
+                      onSave={handleActionItemsSave}
+                    />
+                  </div>
+                )}
+
                 {lesson.actionItems && lesson.actionItems.length > 0 && (
                   <section className="mb-8">
-                    <h2 className="font-headline text-2xl mb-3 flex items-center"><ListChecks className="mr-2 h-6 w-6 text-primary" /> Action Items</h2>
+                    <h2 className="font-headline text-2xl mb-3 flex items-center">
+                      <ListChecks className="mr-2 h-6 w-6 text-primary" /> Action Items
+                    </h2>
                     <ul className="space-y-2">
                       {lesson.actionItems.map((item, index) => (
                         <li key={index} className="flex items-start gap-2">
@@ -294,9 +381,22 @@ export default function LessonPage() {
                   </section>
                 )}
 
+                {isAdmin && (
+                  <div className="mb-8">
+                    <EditableLessonSection
+                      title="Resources"
+                      type="files"
+                      value={lesson.files || []}
+                      onSave={handleFilesSave}
+                    />
+                  </div>
+                )}
+
                 {lesson.files && lesson.files.length > 0 && (
                   <section className="mb-8">
-                    <h2 className="font-headline text-2xl mb-3 flex items-center"><BookOpen className="mr-2 h-6 w-6 text-primary" /> Resources</h2>
+                    <h2 className="font-headline text-2xl mb-3 flex items-center">
+                      <BookOpen className="mr-2 h-6 w-6 text-primary" /> Resources
+                    </h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {lesson.files.map((file) => (
                         <a
