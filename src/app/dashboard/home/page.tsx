@@ -28,9 +28,9 @@ export default function DashboardHomePage() {
           {quickLinks.map((link) => (
             <Card key={link.href} className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
               <CardHeader>
-                <div className="flex items-center text-primary mb-2">
-                  <link.icon className="h-7 w-7 mr-3" />
-                  <CardTitle className={cn("text-xl font-headline", link.title === "Browse Courses" && "text-accent")}>{link.title}</CardTitle>
+                <div className="flex items-center text-accent mb-2"> {/* Changed from text-primary to text-accent */}
+                  <link.icon className="h-7 w-7 mr-3" /> {/* Icon will inherit text-accent */}
+                  <CardTitle className="text-xl font-headline text-accent">{link.title}</CardTitle> {/* Title is now always text-accent */}
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">
