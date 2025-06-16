@@ -1,4 +1,3 @@
-
 "use client"
 
 import type { Module as ModuleType } from "@/types/classroom";
@@ -26,10 +25,10 @@ import type { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities/us
 interface ModuleAccordionProps {
   module: ModuleType;
   courseId: string;
-  lessonCompletions: Record<string, boolean>;
+  lessonCompletions?: Record<string, boolean>;
   currentLessonId?: string;
-  onDeleteModule: (moduleId: string) => void;
-  onDuplicateModule: (moduleId: string) => void;
+  onDeleteModule?: (moduleId: string) => void;
+  onDuplicateModule?: (moduleId: string) => void;
   // DND props
   attributes?: DraggableAttributes;
   listeners?: SyntheticListenerMap;
@@ -41,7 +40,7 @@ interface ModuleAccordionProps {
 export function ModuleAccordion({
   module,
   courseId,
-  lessonCompletions,
+  lessonCompletions = {},
   currentLessonId,
   onDeleteModule,
   onDuplicateModule,

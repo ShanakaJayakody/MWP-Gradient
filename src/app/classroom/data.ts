@@ -1,5 +1,4 @@
-
-import type { Course, Module, Lesson } from "@/types/classroom";
+import type { Course, Module, Lesson, CourseAnalytics } from "@/types/classroom";
 
 export let mockCourses: Course[] = [
   {
@@ -9,22 +8,33 @@ export let mockCourses: Course[] = [
     imageUrl: "https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/VR_banner",
     instructor: "Dr. Sarah Johnson",
     duration: "12 hours",
-    progress: 65, // Initial progress
+    progress: 65,
+    communityId: "vr-community",
+    accessLevel: "all",
+    coverImageUrl: "https://ik.imagekit.io/mwp/MWP%20Platform%20Design%20Images/VR_banner",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     modules: [
       {
         id: "vr-module-1",
         title: "Introduction to Verbal Reasoning",
         description: "Understand the fundamentals and question types.",
+        position: 1,
+        isPublished: true,
+        unlockLevel: 0,
         lessons: [
           {
             id: "vr-lesson-1-1",
             title: "What is Verbal Reasoning?",
             textContent: "<p>Verbal reasoning tests assess your ability to read and understand written information and use this to make reasoned judgements. This lesson covers the basics. You will learn common strategies for tackling these questions efficiently.</p><h3>Key Topics:</h3><ul><li>Understanding passage structure</li><li>Identifying main ideas vs. supporting details</li><li>Making inferences</li></ul>",
-            videoUrl: "https://www.youtube.com/watch?v=kf4j0Q8Lw0k", // Example video
+            videoUrl: "https://www.youtube.com/watch?v=kf4j0Q8Lw0k",
             actionItems: ["Read Chapter 1 of the UCAT guide.", "Attempt introductory quiz on VR basics."],
             transcript: "Welcome to our first lesson on Verbal Reasoning. In this session, we'll break down what verbal reasoning entails in the context of the UCAT exam. We'll explore different question types and discuss initial strategies. Make sure to download the introductory worksheet.",
             files: [{id: "file-vr-1-1-worksheet", name: "VR Intro Worksheet.pdf", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", type: "pdf"}],
             isCompleted: true,
+            duration: 1800,
+            contentType: "mixed",
+            completedAt: new Date().toISOString()
           },
           {
             id: "vr-lesson-1-2",
@@ -47,6 +57,10 @@ export let mockCourses: Course[] = [
         id: "vr-module-2",
         title: "Advanced Verbal Reasoning Techniques",
         description: "Develop advanced skills for tackling complex passages and nuanced questions.",
+        position: 2,
+        isPublished: true,
+        unlockLevel: 1,
+        unlockDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
         lessons: [
           {
             id: "vr-lesson-2-1",
@@ -54,14 +68,19 @@ export let mockCourses: Course[] = [
             textContent: "<p>Master effective techniques for quickly extracting vital information from dense passages without reading every word. This is crucial for time management.</p>",
             files: [{id: "file-vr-2-1-guide", name: "Skimming Guide.pdf", url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf", type: "pdf"}],
             isCompleted: true,
+            duration: 2400, // 40 minutes
+            contentType: "text",
+            completedAt: new Date().toISOString()
           },
           {
             id: "vr-lesson-2-2",
             title: "True, False, Can't Tell Questions Deep Dive",
             textContent: "<p>A detailed look at strategies for accurately and consistently answering True/False/Can't Tell (TFC) questions, one of the trickiest UCAT VR formats.</p>",
-            videoUrl: "https://www.youtube.com/watch?v=video_id_tfc", // Example video
+            videoUrl: "https://www.youtube.com/watch?v=video_id_tfc",
             actionItems: ["Practice TFC questions set A.", "Review TFC decision tree."],
             isCompleted: false,
+            duration: 3600, // 60 minutes
+            contentType: "mixed"
           },
         ],
       },
@@ -253,4 +272,36 @@ export const duplicateModule = (courseId: string, moduleId: string): Module | un
 // This might not be necessary if component state updates correctly.
 export const getCourses = (): Course[] => {
     return mockCourses;
+};
+
+// Add new helper functions for analytics
+export const getCourseAnalytics = (courseId: string): CourseAnalytics => {
+  const course = getCourseById(courseId);
+  if (!course) {
+    throw new Error(`Course not found: ${courseId}`);
+  }
+
+  const totalLessons = course.modules.reduce((acc, module) => acc + module.lessons.length, 0);
+  const completedLessons = course.modules.reduce((acc, module) => 
+    acc + module.lessons.filter(lesson => lesson.isCompleted).length, 0);
+
+  const moduleCompletionRates: Record<string, number> = {};
+  course.modules.forEach(module => {
+    const totalModuleLessons = module.lessons.length;
+    const completedModuleLessons = module.lessons.filter(lesson => lesson.isCompleted).length;
+    moduleCompletionRates[module.id] = (completedModuleLessons / totalModuleLessons) * 100;
+  });
+
+  return {
+    courseId,
+    totalStudents: 100, // Mock data
+    completionRate: (completedLessons / totalLessons) * 100,
+    averageProgress: course.progress || 0,
+    moduleCompletionRates,
+    averageTimePerLesson: 2700, // Mock data: 45 minutes
+    dropOffPoints: course.modules.map(module => ({
+      lessonId: module.lessons[0].id,
+      dropOffRate: Math.random() * 20 // Mock data: 0-20% drop-off rate
+    }))
+  };
 };

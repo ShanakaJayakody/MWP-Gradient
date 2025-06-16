@@ -1,17 +1,12 @@
-
 "use client"
 
-import { notFound, useRouter } from "next/navigation";
-import Image from "next/image";
-import { deleteCourse, getCourseById, updateCourseModules, deleteModule, duplicateModule } from "../data";
-import { ModuleAccordion } from "@/components/classroom/module-accordion";
-import { Accordion } from "@/components/ui/accordion";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { notFound, useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, MoreVertical, Edit, Trash2, FilePlus2, FolderPlus, GripVertical } from "lucide-react";
-import type { Module } from "@/types/classroom";
-import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import Link from "next/link";
+import { ArrowLeft, Edit, FolderPlus, FilePlus2, Trash2, MoreVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,19 +14,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { AddModuleDialog } from "@/components/classroom/add-module-dialog";
-
+import { CourseAnalytics } from "@/components/classroom/course-analytics";
+import type { Course } from "@/types/classroom";
+import { getCourseById, deleteCourse, updateCourseModules } from "../data";
+import { Accordion } from "@/components/ui/accordion";
+import { ModuleAccordion } from "@/components/classroom/module-accordion";
 import {
   DndContext,
   closestCenter,
@@ -46,64 +35,19 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
-  useSortable,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-
-interface CoursePageProps {
-  params: { courseId: string };
-}
 
 interface CourseClientPageProps {
   courseId: string;
 }
 
-// Wrapper for ModuleAccordion to integrate with dnd-kit's useSortable
-function SortableModuleItem({ module, ...props }: { module: Module } & Omit<React.ComponentProps<typeof ModuleAccordion>, 'module' | 'setNodeRef' | 'attributes' | 'listeners' | 'style' | 'isDragging'>) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: module.id });
-
-  const style: React.CSSProperties = {
-    transition: transition || undefined, // Use dnd-kit's transition, or allow CSS to handle if null
-    zIndex: isDragging ? 100 : 'auto', // Ensure dragged item is above others
-  };
-
-  if (transform) {
-    // Apply transform using translate3d for potential hardware acceleration and to include scale if provided by strategy
-    style.transform = `translate3d(${transform.x}px, ${transform.y}px, 0) scaleX(${transform.scaleX || 1}) scaleY(${transform.scaleY || 1})`;
-  }
-
-
-  return (
-    <ModuleAccordion
-      module={module}
-      setNodeRef={setNodeRef}
-      attributes={attributes}
-      listeners={listeners}
-      style={style}
-      isDragging={isDragging}
-      {...props}
-    />
-  );
-}
-
-
 function CourseClientPage({ courseId }: CourseClientPageProps) {
   const router = useRouter();
   const { toast } = useToast();
   
-  const [currentCourse, setCurrentCourse] = useState<ReturnType<typeof getCourseById>>(null);
+  const [currentCourse, setCurrentCourse] = useState<Course | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
-  const [lessonCompletions, setLessonCompletions] = React.useState<Record<string, boolean>>({});
   const [isDeleteCourseDialogOpen, setIsDeleteCourseDialogOpen] = useState(false);
-  const [isDeleteModuleDialogOpen, setIsDeleteModuleDialogOpen] = useState(false);
-  const [moduleToDelete, setModuleToDelete] = useState<string | null>(null);
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
 
   const sensors = useSensors(
@@ -115,8 +59,8 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
 
   useEffect(() => {
     const fetchedCourse = getCourseById(courseId);
-    setCurrentCourse(fetchedCourse);
-    setIsLoading(false); // Moved here to ensure it's set after attempting to fetch
+    setCurrentCourse(fetchedCourse || undefined);
+    setIsLoading(false);
 
     if (fetchedCourse) {
       const localStorageKey = `lastViewedLesson_${courseId}`;
@@ -126,37 +70,19 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
         const lessonExists = fetchedCourse.modules.some(m => m.lessons.some(l => l.id === lastViewedLessonId));
         if (lessonExists) {
           router.replace(`/classroom/${courseId}/${lastViewedLessonId}`);
-          return; 
+          return;
         } else {
-          localStorage.removeItem(localStorageKey); 
+          localStorage.removeItem(localStorageKey);
         }
       }
       
       if (fetchedCourse.modules?.[0]?.lessons?.[0]?.id) {
         const firstLessonId = fetchedCourse.modules[0].lessons[0].id;
         router.replace(`/classroom/${courseId}/${firstLessonId}`);
-        return; 
+        return;
       }
     }
-    // If no redirect occurs, the page content (course overview) will render.
-    // setIsLoading(false) was moved up to ensure it's set even if fetchedCourse is null initially.
   }, [courseId, router]);
-
-
-  useEffect(() => {
-    if (currentCourse) {
-      const initialCompletions: Record<string, boolean> = {};
-      currentCourse.modules.forEach(module => {
-        module.lessons.forEach(lesson => {
-          const storedCompletions = localStorage.getItem('lessonCompletions');
-          const completions = storedCompletions ? JSON.parse(storedCompletions) : {};
-          initialCompletions[lesson.id] = completions[lesson.id] || lesson.isCompleted || false;
-        });
-      });
-      setLessonCompletions(initialCompletions);
-    }
-  }, [currentCourse]);
-
 
   const handleDeleteCourseAction = () => {
     if (currentCourse) {
@@ -180,15 +106,18 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
 
   const handleAddModuleCallback = (moduleName: string, isPublished: boolean) => {
     if (currentCourse) {
-      const newModule: Module = {
+      const newModule = {
         id: `module-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
         title: moduleName,
         description: isPublished ? "Published module" : "Draft module",
         lessons: [],
+        position: currentCourse.modules.length + 1,
+        isPublished
       };
       const updatedModules = [...currentCourse.modules, newModule];
       updateCourseModules(currentCourse.id, updatedModules);
-      setCurrentCourse(getCourseById(courseId));
+      const updatedCourse = getCourseById(courseId);
+      setCurrentCourse(updatedCourse || undefined);
       toast({
         title: "Module Added",
         description: `"${moduleName}" has been added to ${currentCourse.title}.`,
@@ -197,47 +126,7 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
     setIsAddModuleDialogOpen(false);
   };
 
-  const handleDeleteModuleAction = () => {
-    if (currentCourse && moduleToDelete) {
-      const success = deleteModule(currentCourse.id, moduleToDelete);
-      if (success) {
-        toast({
-          title: "Module Deleted",
-          description: `Module has been successfully deleted from "${currentCourse.title}".`,
-        });
-        setCurrentCourse(getCourseById(courseId)); 
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error Deleting Module",
-          description: "Could not delete the module. Please try again.",
-        });
-      }
-    }
-    setIsDeleteModuleDialogOpen(false);
-    setModuleToDelete(null);
-  };
-
-  const handleDuplicateModuleAction = (moduleId: string) => {
-    if (currentCourse) {
-      const duplicated = duplicateModule(currentCourse.id, moduleId);
-      if (duplicated) {
-        toast({
-          title: "Module Duplicated",
-          description: `Module "${duplicated.title}" has been successfully created.`,
-        });
-        setCurrentCourse(getCourseById(courseId)); 
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Error Duplicating Module",
-          description: "Could not duplicate the module. Please try again.",
-        });
-      }
-    }
-  };
-
-  function handleModuleDragEnd(event: DragEndEvent) {
+  const handleModuleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (currentCourse && active.id !== over?.id && over) {
       const oldIndex = currentCourse.modules.findIndex((m) => m.id === active.id);
@@ -245,44 +134,29 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
       
       const reorderedModules = arrayMove(currentCourse.modules, oldIndex, newIndex);
       
-      setCurrentCourse(prevCourse => prevCourse ? { ...prevCourse, modules: reorderedModules } : null);
-      updateCourseModules(courseId, reorderedModules); 
+      setCurrentCourse(prevCourse => prevCourse ? { ...prevCourse, modules: reorderedModules } : undefined);
+      updateCourseModules(courseId, reorderedModules);
       
       toast({ title: "Module Reordered", description: "The module order has been updated." });
     }
-  }
-  
-  if (isLoading) { 
-     return (
-        <div className="container mx-auto py-8 px-4 text-center">
-            <p className="text-lg text-muted-foreground">Loading course content...</p>
-        </div>
+  };
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto py-8 px-4">
+        <p>Loading course details...</p>
+      </div>
     );
   }
-  
+
   if (!currentCourse) {
-    notFound();
+    return notFound();
   }
 
   return (
-    <>
-      <div className="container mx-auto py-8 px-4">
-        <Button variant="outline" asChild className="mb-6">
-          <Link href="/classroom"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Classroom</Link>
-        </Button>
-
-        <Card className="mb-8 overflow-hidden shadow-xl">
-          {currentCourse.imageUrl && (
-            <div className="relative w-full h-64 md:h-80">
-              <Image
-                src={currentCourse.imageUrl}
-                alt={currentCourse.title}
-                layout="fill"
-                objectFit="cover"
-                data-ai-hint="education learning"
-              />
-            </div>
-          )}
+    <div className="container mx-auto py-8 px-4">
+      <div className="grid grid-cols-1 gap-8">
+        <Card className="shadow-xl">
           <CardHeader className="p-6 flex flex-row justify-between items-start">
             <div>
               <CardTitle className="font-headline text-3xl md:text-4xl mb-2">{currentCourse.title}</CardTitle>
@@ -321,8 +195,47 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
             </DropdownMenu>
           </CardHeader>
           <CardContent className="p-6">
-            <h2 className="font-headline text-2xl font-semibold mb-6">Course Modules</h2>
-            {currentCourse.modules.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Course Details</h3>
+                <div className="space-y-2">
+                  {currentCourse.instructor && (
+                    <p className="text-sm">
+                      <span className="font-medium">Instructor:</span> {currentCourse.instructor}
+                    </p>
+                  )}
+                  {currentCourse.duration && (
+                    <p className="text-sm">
+                      <span className="font-medium">Duration:</span> {currentCourse.duration}
+                    </p>
+                  )}
+                  {currentCourse.accessLevel && (
+                    <p className="text-sm">
+                      <span className="font-medium">Access Level:</span> {currentCourse.accessLevel}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold mb-2">Your Progress</h3>
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-2">
+                    <Progress value={currentCourse.progress || 0} className="flex-1" />
+                    <span className="text-sm font-medium">{currentCourse.progress || 0}%</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {currentCourse.progress === 100 
+                      ? "Course completed! 🎉" 
+                      : "Keep going! You're making progress."}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <CourseAnalytics courseId={currentCourse.id} />
+
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4">Course Modules</h3>
               <DndContext
                 sensors={sensors}
                 collisionDetection={closestCenter}
@@ -332,72 +245,28 @@ function CourseClientPage({ courseId }: CourseClientPageProps) {
                   items={currentCourse.modules.map(m => m.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  <Accordion type="multiple" className="w-full space-y-0" defaultValue={currentCourse.modules.map(m => m.id)}>
+                  <Accordion type="single" collapsible className="w-full space-y-2">
                     {currentCourse.modules.map((module) => (
-                      <SortableModuleItem
+                      <ModuleAccordion
                         key={module.id}
-                        module={module} 
-                        courseId={currentCourse.id} 
-                        lessonCompletions={lessonCompletions}
-                        onDeleteModule={(moduleId) => {
-                          setModuleToDelete(moduleId);
-                          setIsDeleteModuleDialogOpen(true);
-                        }}
-                        onDuplicateModule={handleDuplicateModuleAction}
+                        module={module}
+                        courseId={currentCourse.id}
                       />
                     ))}
                   </Accordion>
                 </SortableContext>
               </DndContext>
-            ) : (
-              <p className="text-muted-foreground">This course currently has no modules. You can add them by clicking "Add Module" in the options menu above.</p>
-            )}
+            </div>
           </CardContent>
         </Card>
       </div>
-
-      <AlertDialog open={isDeleteCourseDialogOpen} onOpenChange={setIsDeleteCourseDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this course?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the course
-              "{currentCourse.title}" and all of its associated modules and lessons.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteCourseAction} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
-              Delete Course
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-      
-      <AlertDialog open={isDeleteModuleDialogOpen} onOpenChange={setIsDeleteModuleDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure you want to delete this module?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the module
-              "{currentCourse.modules.find(m => m.id === moduleToDelete)?.title}" and all its lessons.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setModuleToDelete(null)}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteModuleAction} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">
-              Delete Module
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       <AddModuleDialog
         open={isAddModuleDialogOpen}
         onOpenChange={setIsAddModuleDialogOpen}
         onAddModule={(moduleName, isPublished) => handleAddModuleCallback(moduleName, isPublished)}
       />
-    </>
+    </div>
   );
 }
 
