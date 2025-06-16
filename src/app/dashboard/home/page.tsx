@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowRight, BookOpen, CalendarDays, ClipboardList, TrendingUp } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const quickLinks = [
     { title: "Browse Courses", href: "/classroom", icon: BookOpen, description: "Explore and enroll in UCAT courses." },
@@ -29,7 +30,7 @@ export default function DashboardHomePage() {
               <CardHeader>
                 <div className="flex items-center text-primary mb-2">
                   <link.icon className="h-7 w-7 mr-3" />
-                  <CardTitle className="text-xl font-headline">{link.title}</CardTitle>
+                  <CardTitle className={cn("text-xl font-headline", link.title === "Browse Courses" && "text-accent")}>{link.title}</CardTitle>
                 </div>
               </CardHeader>
               <CardContent className="flex-grow">
