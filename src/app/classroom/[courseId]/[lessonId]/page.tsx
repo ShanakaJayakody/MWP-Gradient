@@ -34,6 +34,21 @@ import { LessonCompletionCheckbox } from "@/components/classroom/lesson-completi
 import type { Course, Module, Lesson, FileInfo } from "@/types/classroom";
 import { getCourseById, deleteCourse, updateCourseModules, getLessonById } from "../../data";
 import { EditableLessonSection } from "@/components/classroom/editable-lesson-section";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 interface CourseClientPageProps {
   courseId: string;
@@ -54,6 +69,13 @@ export default function LessonPage() {
   const [isDeleteCourseDialogOpen, setIsDeleteCourseDialogOpen] = useState(false);
   const [isAddModuleDialogOpen, setIsAddModuleDialogOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(true); // TODO: Replace with actual admin check
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   useEffect(() => {
     if (!courseId || !lessonId) {
@@ -233,6 +255,44 @@ export default function LessonPage() {
     }
   };
 
+  const handleModuleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (courseData && active.id !== over?.id && over) {
+      const oldIndex = courseData.modules.findIndex((m) => m.id === active.id);
+      const newIndex = courseData.modules.findIndex((m) => m.id === over.id);
+      
+      const reorderedModules = arrayMove(courseData.modules, oldIndex, newIndex);
+      updateCourseModules(courseData.id, reorderedModules);
+      setCourseData(prevCourse => prevCourse ? { ...prevCourse, modules: reorderedModules } : null);
+      
+      toast({
+        title: "Module Order Updated",
+        description: "The module order has been successfully updated.",
+      });
+    }
+  };
+
+  const handleLessonReorder = (moduleId: string, oldIndex: number, newIndex: number) => {
+    if (courseData) {
+      const updatedModules = courseData.modules.map(mod => {
+        if (mod.id === moduleId) {
+          const reorderedLessons = arrayMove(mod.lessons, oldIndex, newIndex);
+          return { ...mod, lessons: reorderedLessons };
+        }
+        return mod;
+      });
+
+      updateCourseModules(courseData.id, updatedModules);
+      setCourseData(prevCourse => prevCourse ? { ...prevCourse, modules: updatedModules } : null);
+      
+      toast({
+        title: "Lesson Order Updated",
+        description: "The lesson order has been successfully updated.",
+      });
+    }
+  };
+
   if (!courseData || !lessonDetails) {
     return (
       <div className="container mx-auto py-8 px-4 text-center">
@@ -295,16 +355,30 @@ export default function LessonPage() {
             </div>
 
             <Accordion type="single" collapsible defaultValue={currentModuleIdOpen} className="w-full space-y-1">
-              {course.modules.map((mod) => (
-                <Card key={mod.id} className="overflow-hidden bg-card">
-                  <ModuleAccordion 
-                    module={mod} 
-                    courseId={course.id} 
-                    lessonCompletions={lessonCompletions}
-                    currentLessonId={lesson.id}
-                  />
-                </Card>
-              ))}
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleModuleDragEnd}
+              >
+                <SortableContext
+                  items={course.modules.map(m => m.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {course.modules.map((mod, index) => (
+                    <Card key={mod.id} className="overflow-hidden bg-card">
+                      <ModuleAccordion
+                        module={mod}
+                        courseId={course.id}
+                        lessonCompletions={lessonCompletions}
+                        currentLessonId={lesson.id}
+                        isAdmin={isAdmin}
+                        onLessonReorder={handleLessonReorder}
+                        moduleIndex={index}
+                      />
+                    </Card>
+                  ))}
+                </SortableContext>
+              </DndContext>
             </Accordion>
           </aside>
 
