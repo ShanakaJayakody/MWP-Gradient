@@ -385,6 +385,20 @@ export default function LessonPage() {
           <main className="w-full lg:w-2/3 xl:w-3/4">
             <Card className="shadow-xl">
               <CardHeader className="bg-muted/30 p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <Button variant="outline" asChild>
+                    <Link href={`/classroom/${course.id}`}>
+                      <ArrowLeft className="mr-2 h-4 w-4" /> Back to Course Overview
+                    </Link>
+                  </Button>
+                  {isAdmin && (
+                    <Button asChild>
+                      <Link href={`/admin/edit-lesson/${course.id}/${lesson.id}`}>
+                        <Edit className="mr-2 h-4 w-4" /> Edit Lesson
+                      </Link>
+                    </Button>
+                  )}
+                </div>
                 <p className="text-sm text-primary font-medium mb-1">{module.title}</p>
                 <div className="flex justify-between items-center">
                   <CardTitle className="font-headline text-3xl md:text-4xl">{lesson.title}</CardTitle>
@@ -495,19 +509,6 @@ export default function LessonPage() {
                 />
                 
                 <Separator className="my-8" />
-
-                <div className="flex justify-between items-center">
-                  <Button variant="outline" asChild>
-                    <Link href={`/classroom/${course.id}`}>
-                      <ArrowLeft className="mr-2 h-4 w-4" /> Back to Course Overview
-                    </Link>
-                  </Button>
-                  <Button asChild>
-                    <Link href={`/admin/edit-lesson/${course.id}/${lesson.id}`}>
-                      <Edit className="mr-2 h-4 w-4" /> Edit Lesson
-                    </Link>
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </main>
